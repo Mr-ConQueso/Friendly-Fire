@@ -34,8 +34,8 @@ public class PauseMenu : MonoBehaviour
 
     private void Start()
     {
-        gameObject.SetActive(false);
         canvasGroup = GetComponent<CanvasGroup>();
+        gameObject.SetActive(false);
     }
 
     private void OnDestroy()

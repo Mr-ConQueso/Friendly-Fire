@@ -388,7 +388,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 31
+  m_AdditionalShaderChannelsFlag: 7
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -402,7 +402,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 782987684}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97bb4861d18e021db9cdc9251ffdeeb7, type: 3}
+  m_Script: {fileID: 11500000, guid: 2dc03e7d90b6784ee83bcfb8952b751a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &925329923
@@ -1032,14 +1032,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1955194983}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d86dd13f8e9a29fca0d7e943c771fae, type: 3}
+  m_Script: {fileID: 11500000, guid: 826ffa0470b7f9b17af811b4b7221bac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectableItems:
-  - {fileID: 0}
-  - {fileID: 2134075204}
-  - {fileID: 0}
-  - {fileID: 0}
+  SelectableItems: []
 --- !u!114 &1955194988
 MonoBehaviour:
   m_ObjectHideFlags: 0
