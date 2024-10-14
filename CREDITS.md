@@ -5,6 +5,9 @@ All the code in this repository was created by our programmers MrConQueso & xZub
 Most assets, from textures and models to sounds have been created by our team and amazing artists PaoloDary & NanoBMendo,
 in the next sections we will detail the assets that were used with public licenses for this project.
 
+## Models
+[low Poly Human](https://sketchfab.com/3d-models/low-poly-human-ac9d4b28c49c45cb83f64385affe5acd) [Rig created by us]
+
 ## Textures
 [Fog Texture](https://www.vrogue.co/post/free-fog-png-transparent-images-download-free-fog-png-vrogue-co)
 
