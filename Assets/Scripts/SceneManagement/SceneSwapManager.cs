@@ -21,6 +21,7 @@ namespace BaseGame
         private void OnEnable()
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
+            SceneTransitionManager.Instance.StartAnimation();
         }
 
         private void OnDisable()

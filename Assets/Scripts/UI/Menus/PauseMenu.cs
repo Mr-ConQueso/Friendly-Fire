@@ -1,7 +1,6 @@
 using System.Collections;
 using BaseGame;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -9,7 +8,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private float fadeDuration = 1f;
     
     // ---- / Private Variables / ---- //
-    private CanvasGroup canvasGroup;
+    private CanvasGroup _canvasGroup;
     
     public void OnClick_ResumeGame()
     {
@@ -34,7 +33,7 @@ public class PauseMenu : MonoBehaviour
 
     private void Start()
     {
-        canvasGroup = GetComponent<CanvasGroup>();
+        _canvasGroup = GetComponent<CanvasGroup>();
         gameObject.SetActive(false);
     }
 
@@ -47,14 +46,14 @@ public class PauseMenu : MonoBehaviour
     private void OnGameResumed()
     {
         GameController.Instance.CanPauseGame = false;
-        StartCoroutine(FadeCanvasGroup(canvasGroup, 1f, 0f, false));
+        StartCoroutine(FadeCanvasGroup(_canvasGroup, 1f, 0f, false));
     }
 
     private void OnGamePaused()
     {
         GameController.Instance.CanPauseGame = false;
         gameObject.SetActive(true);
-        StartCoroutine(FadeCanvasGroup(canvasGroup, 0f, 1f, true));
+        StartCoroutine(FadeCanvasGroup(_canvasGroup, 0f, 1f, true));
     }
 
     private IEnumerator FadeCanvasGroup(CanvasGroup canvasGroup, float startAlpha, float endAlpha, bool active)

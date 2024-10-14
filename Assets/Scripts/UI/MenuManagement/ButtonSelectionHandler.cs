@@ -64,7 +64,7 @@ public class ButtonSelectionHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         StartCoroutine(MoveButton(true));
         MenuSelector.Instance.LastSelected = gameObject;
 
-        for (int i = 0; i < MenuSelector.Instance.SelectableItems.Length; i++)
+        for (int i = 0; i < MenuSelector.Instance.SelectableItems.Count; i++)
         {
             if (MenuSelector.Instance.SelectableItems[i] == gameObject)
             {

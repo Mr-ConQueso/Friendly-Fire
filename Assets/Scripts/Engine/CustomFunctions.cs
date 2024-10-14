@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BaseGame
@@ -52,6 +53,27 @@ namespace BaseGame
 
             return component != null;
         }
+        
+        /// <summary>
+        /// Finds all components of type T in the children of the parent GameObject.
+        /// </summary>
+        /// <typeparam name="T">The type of component to find.</typeparam>
+        /// <param name="parent">The parent GameObject.</param>
+        /// <returns>List of components found in the children.</returns>
+        public static List<T> GetComponentsInChildren<T>(this GameObject parent) where T : Component
+        {
+            List<T> components = new List<T>();
+    
+            T[] foundComponents = parent.GetComponentsInChildren<T>();
+
+            if (foundComponents != null && foundComponents.Length > 0)
+            {
+                components.AddRange(foundComponents);
+            }
+
+            return components;
+        }
+
         
         /// <summary>
         /// 

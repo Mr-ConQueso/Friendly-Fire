@@ -1,18 +1,18 @@
+using System;
 using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
     // ---- / Public Variables / ---- //
-    public static GameObject MainMenu, PauseMenu, CreditsMenu, LevelChooserMenu;
+    public static GameObject MainMenu, PauseMenu, LevelChooserMenu;
 
     private void Awake()
     {
         MainMenu = transform.Find("MainMenu")?.gameObject;
         PauseMenu = transform.Find("PauseMenu")?.gameObject;
-        CreditsMenu = transform.Find("CreditsMenu")?.gameObject;
         LevelChooserMenu = transform.Find("LevelChooserMenu")?.gameObject;
     }
-    
+
     /// <summary>
     /// Open the selected Menu and close the current calling this funtion
     /// </summary>
@@ -27,9 +27,6 @@ public class MenuManager : MonoBehaviour
                 break;
             case Menu.PauseMenu:
                 PauseMenu.SetActive(true);
-                break;
-            case Menu.CreditsMenu:
-                CreditsMenu.SetActive(true);
                 break;
             case Menu.LevelChooserMenu:
                 LevelChooserMenu.SetActive(true);

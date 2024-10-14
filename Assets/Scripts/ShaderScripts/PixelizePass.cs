@@ -1,50 +1,55 @@
 
+using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
 public class PixelizePass : ScriptableRenderPass
 {
-    private PixelizeFeature.CustomPassSettings settings;
+    private static readonly int BlockCount = Shader.PropertyToID("_BlockCount");
+    private static readonly int BlockSize = Shader.PropertyToID("_BlockSize");
+    private static readonly int HalfBlockSize = Shader.PropertyToID("_HalfBlockSize");
+    private readonly PixelizeFeature.CustomPassSettings _settings;
 
-    private RenderTargetIdentifier colorBuffer, pixelBuffer;
-    private int pixelBufferID = Shader.PropertyToID("_PixelBuffer");
+    private RenderTargetIdentifier _colorBuffer, _pixelBuffer;
+    private readonly int _pixelBufferID = Shader.PropertyToID("_PixelBuffer");
 
     //private RenderTargetIdentifier pointBuffer;
     //private int pointBufferID = Shader.PropertyToID("_PointBuffer");
 
-    private Material material;
-    private int pixelScreenHeight, pixelScreenWidth;
+    private readonly Material _material;
+    private int _pixelScreenHeight, _pixelScreenWidth;
 
     public PixelizePass(PixelizeFeature.CustomPassSettings settings)
     {
-        this.settings = settings;
+        this._settings = settings;
         this.renderPassEvent = settings.renderPassEvent;
-        if (material == null) material = CoreUtils.CreateEngineMaterial("Hidden/Pixelize");
+        if (_material == null) _material = CoreUtils.CreateEngineMaterial("Hidden/Pixelize");
     }
 
     public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
     {
-        colorBuffer = renderingData.cameraData.renderer.cameraColorTarget;
+        _colorBuffer = renderingData.cameraData.renderer.cameraColorTargetHandle;
         RenderTextureDescriptor descriptor = renderingData.cameraData.cameraTargetDescriptor;
 
         //cmd.GetTemporaryRT(pointBufferID, descriptor.width, descriptor.height, 0, FilterMode.Point);
         //pointBuffer = new RenderTargetIdentifier(pointBufferID);
 
-        pixelScreenHeight = settings.screenHeight;
-        pixelScreenWidth = (int)(pixelScreenHeight * renderingData.cameraData.camera.aspect + 0.5f);
+        _pixelScreenHeight = _settings.screenHeight;
+        _pixelScreenWidth = (int)(_pixelScreenHeight * renderingData.cameraData.camera.aspect + 0.5f);
 
-        material.SetVector("_BlockCount", new Vector2(pixelScreenWidth, pixelScreenHeight));
-        material.SetVector("_BlockSize", new Vector2(1.0f / pixelScreenWidth, 1.0f / pixelScreenHeight));
-        material.SetVector("_HalfBlockSize", new Vector2(0.5f / pixelScreenWidth, 0.5f / pixelScreenHeight));
+        _material.SetVector(BlockCount, new Vector2(_pixelScreenWidth, _pixelScreenHeight));
+        _material.SetVector(BlockSize, new Vector2(1.0f / _pixelScreenWidth, 1.0f / _pixelScreenHeight));
+        _material.SetVector(HalfBlockSize, new Vector2(0.5f / _pixelScreenWidth, 0.5f / _pixelScreenHeight));
 
-        descriptor.height = pixelScreenHeight;
-        descriptor.width = pixelScreenWidth;
+        descriptor.height = _pixelScreenHeight;
+        descriptor.width = _pixelScreenWidth;
 
-        cmd.GetTemporaryRT(pixelBufferID, descriptor, FilterMode.Point);
-        pixelBuffer = new RenderTargetIdentifier(pixelBufferID);
+        cmd.GetTemporaryRT(_pixelBufferID, descriptor, FilterMode.Point);
+        _pixelBuffer = new RenderTargetIdentifier(_pixelBufferID);
     }
 
+    [Obsolete("Obsolete")]
     public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
     {
         CommandBuffer cmd = CommandBufferPool.Get();
@@ -55,8 +60,8 @@ public class PixelizePass : ScriptableRenderPass
             //Blit(cmd, pointBuffer, pixelBuffer);
             //Blit(cmd, pixelBuffer, colorBuffer);
 
-            Blit(cmd, colorBuffer, pixelBuffer, material);
-            Blit(cmd, pixelBuffer, colorBuffer);
+            Blit(cmd, _colorBuffer, _pixelBuffer, _material);
+            Blit(cmd, _pixelBuffer, _colorBuffer);
         }
 
         context.ExecuteCommandBuffer(cmd);
@@ -65,8 +70,8 @@ public class PixelizePass : ScriptableRenderPass
 
     public override void OnCameraCleanup(CommandBuffer cmd)
     {
-        if (cmd == null) throw new System.ArgumentNullException("cmd");
-        cmd.ReleaseTemporaryRT(pixelBufferID);
+        if (cmd == null) throw new ArgumentNullException(nameof(cmd));
+        cmd.ReleaseTemporaryRT(_pixelBufferID);
         //cmd.ReleaseTemporaryRT(pointBufferID);
     }
 

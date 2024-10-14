@@ -67,9 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Exit
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 42459f228fa51724dbf28ad367c5a540, type: 2}
-  m_sharedMaterial: {fileID: -8635348305307982539, guid: 42459f228fa51724dbf28ad367c5a540,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -239,9 +238,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Resume
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 42459f228fa51724dbf28ad367c5a540, type: 2}
-  m_sharedMaterial: {fileID: -8635348305307982539, guid: 42459f228fa51724dbf28ad367c5a540,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -453,6 +451,7 @@ GameObject:
   - component: {fileID: 7275290235522342484}
   - component: {fileID: 4462565009881628972}
   - component: {fileID: 4886207274332787667}
+  - component: {fileID: 3992506328552541635}
   m_Layer: 0
   m_Name: PauseMenu
   m_TagString: Untagged
@@ -543,6 +542,21 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &3992506328552541635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6142934425360095389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 826ffa0470b7f9b17af811b4b7221bac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectableItems:
+  - {fileID: 5479527552108133449}
+  - {fileID: 6289376416427995767}
 --- !u!1 &6289376416427995767
 GameObject:
   m_ObjectHideFlags: 0
@@ -556,7 +570,7 @@ GameObject:
   - component: {fileID: 5362428343418745154}
   - component: {fileID: 1218330547654024185}
   m_Layer: 0
-  m_Name: EndGame
+  m_Name: ExitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
