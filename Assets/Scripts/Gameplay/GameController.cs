@@ -72,6 +72,9 @@ public class GameController : MonoBehaviour
 
     private void StartGame()
     {
+        IsPlayerFrozen = false;
+        IsGamePaused = false;
+        CanPauseGame = true;
         OnGameStart?.Invoke();
     }
 

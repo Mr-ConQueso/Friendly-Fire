@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using BaseGame;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class MenuSelector : MonoBehaviour
 {
@@ -11,13 +14,31 @@ public class MenuSelector : MonoBehaviour
     // ---- / Public Variables / ---- //
     public GameObject LastSelected { get; set; }
     public int LastSelectedIndex { get; set; }
-    public GameObject[] SelectableItems;
+    public List<GameObject> SelectableItems = new List<GameObject>();
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+        }
+    }
+
+    private void Start()
+    {
+        List<Selectable> selectableChildren = CustomFunctions.GetComponentsInChildren<Selectable>(gameObject);
+    
+        if (SelectableItems.Count == 0 && selectableChildren.Count > 0)
+        {
+            SelectableItems.Clear();
+            for (int i = 0; i < selectableChildren.Count; i++)
+            {
+                SelectableItems.Add(selectableChildren[i].gameObject);
+            }
+        }
+        else if (selectableChildren.Count == 0)
+        {
+            Debug.LogWarning($"No selectable items within the menu: {gameObject.name}");
         }
     }
     
@@ -43,13 +64,17 @@ public class MenuSelector : MonoBehaviour
         if (EventSystem.current.currentSelectedGameObject == null && LastSelected != null)
         {
             int newIndex = LastSelectedIndex + addition;
-            newIndex = Mathf.Clamp(newIndex, 0, SelectableItems.Length - 1);
+            newIndex = Mathf.Clamp(newIndex, 0, SelectableItems.Count - 1);
             EventSystem.current.SetSelectedGameObject(SelectableItems[newIndex]);
         }
     }
 
     private IEnumerator SelectAfterOneFrame()
     {
+        if (SelectableItems == null || SelectableItems.Count == 0)
+        {
+            yield break;
+        }
         EventSystem.current.SetSelectedGameObject(SelectableItems[0]);
         yield return null;
     }
