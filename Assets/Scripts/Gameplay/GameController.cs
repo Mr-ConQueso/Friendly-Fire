@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour
     public static GameController Instance;
     
     // ---- / Events / ---- //
+    #region Game Loop Events
     public delegate void GameStartEventHandler();
     public static event GameStartEventHandler OnGameStart;
     
@@ -18,6 +19,21 @@ public class GameController : MonoBehaviour
     public delegate void GameResumedEventHandler();
     public static event GameResumedEventHandler OnGameResumed;
     
+    #endregion
+    
+    #region Player Events
+    
+    public delegate void ChangeTurnEventHandler();
+    public static event ChangeTurnEventHandler OnChangeTurn;
+    
+    public delegate void StartTurn1EventHandler();
+    public static event StartTurn1EventHandler OnStartTurn1;
+    
+    public delegate void StartTurn2EventHandler();
+    public static event StartTurn2EventHandler OnStartTurn2;
+    
+    #endregion
+    
     // ---- / Public Variables / ---- //
     public bool DEBUG_MODE = true;
     
@@ -25,6 +41,11 @@ public class GameController : MonoBehaviour
     [HideInInspector] public bool CanPauseGame = false;
     [HideInInspector] public bool IsPlayerFrozen { get; private set; } = true;
     [HideInInspector] public bool IsGamePaused { get; private set; }
+    [HideInInspector] public PlayerType CurrentTurn { get; private set; } = PlayerType.Player1;
+    [HideInInspector] public int CurrentRound { get; private set; }
+    
+    // ---- / Serialized Variables / ---- //
+    [SerializeField] private int maxRounds = 5;
 
     // ---- / Private Variables / ---- //
     private bool _isGameEnded;
@@ -34,6 +55,42 @@ public class GameController : MonoBehaviour
         IsPlayerFrozen = false;
         IsGamePaused = false;
         OnGameResumed?.Invoke();
+    }
+
+    public void InvokeStartTurn1()
+    {
+        OnStartTurn1?.Invoke();
+    }
+    
+    public void InvokeStartTurn2()
+    {
+        OnStartTurn2?.Invoke();
+    }
+
+    public void ChangeTurn()
+    {
+        if (CurrentRound + 1 > maxRounds)
+        {
+           EndGame();
+           return;
+        }
+        
+        CurrentRound++;
+        switch (CurrentTurn)
+        {
+            case PlayerType.Player1:
+            {
+                CurrentTurn = PlayerType.Player2;
+                OnChangeTurn?.Invoke();
+                break;
+            }
+            case PlayerType.Player2:
+            {
+                CurrentTurn = PlayerType.Player1;
+                OnChangeTurn?.Invoke();
+                break;
+            }
+        }
     }
 
     public void InvokeOnGameEnd()
@@ -76,6 +133,7 @@ public class GameController : MonoBehaviour
         IsGamePaused = false;
         CanPauseGame = true;
         OnGameStart?.Invoke();
+        OnStartTurn1?.Invoke();
     }
 
     private void PauseGame()
