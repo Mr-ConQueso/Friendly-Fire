@@ -11,8 +11,9 @@ in the next sections we will detail the assets that were used with public licens
 ## Textures
 [Fog Texture](https://www.vrogue.co/post/free-fog-png-transparent-images-download-free-fog-png-vrogue-co)
 
-## Shaders
+## Shaders & Post-Processing
 [Simple URP Pixelation Shader](https://github.com/whateep/unity-simple-URP-pixelation)
+[URP Gaussian Blur](https://github.com/daniel-ilett/shaders-gaussian-blur)
 
 # Software & Thanks
 This project was created using educational licences of [_Autodesk Maya_](https://www.autodesk.com/education/edu-software/overview), [_Unity Personal_](https://unity.com/es/products/unity-personal) & [_Jetbrains Rider_](https://www.jetbrains.com/community/education/#students),
