@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using RenderTargetHandle = UnityEngine.Rendering.Universal.RTHandle;
+using RenderTargetHandle = UnityEngine.Rendering.Universal.RenderTargetHandle;
 
 public class BlurRenderPass : ScriptableRenderPass
 {
