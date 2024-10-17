@@ -1,26 +1,26 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using RenderTargetHandle = UnityEngine.Rendering.Universal.RenderTargetHandle;
 
 public class BlurRenderPass : ScriptableRenderPass
 {
-    private Material material;
-    private BlurSettings blurSettings;
+    private Material _material;
+    private BlurSettings _blurSettings;
 
-    private RenderTargetIdentifier source;
-    private RenderTargetHandle blurTex;
-    private int blurTexID;
+    private RenderTargetIdentifier _source;
+    private int _blurTexID;
+    private static readonly int GridSize = Shader.PropertyToID("_GridSize");
+    private static readonly int Spread = Shader.PropertyToID("_Spread");
 
-    public bool Setup(RenderTargetIdentifier renderTarget, ScriptableRenderer renderer)
+    public bool Setup(RenderTargetIdentifier renderTarget)
     {
-        source = renderTarget;
-        blurSettings = VolumeManager.instance.stack.GetComponent<BlurSettings>();
+        _source = renderTarget;
+        _blurSettings = VolumeManager.instance.stack.GetComponent<BlurSettings>();
         renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
 
-        if (blurSettings != null && blurSettings.IsActive())
+        if (_blurSettings != null && _blurSettings.IsActive())
         {
-            material = new Material(Shader.Find("PostProcessing/Blur"));
+            _material = new Material(Shader.Find("PostProcessing/Blur"));
             return true;
         }
 
@@ -29,22 +29,25 @@ public class BlurRenderPass : ScriptableRenderPass
 
     public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor)
     {
-        if (blurSettings == null || !blurSettings.IsActive())
+        if (_blurSettings == null || !_blurSettings.IsActive())
         {
             return;
         }
 
-        blurTexID = Shader.PropertyToID("_BlurTex");
-        blurTex = new RenderTargetHandle();
-        blurTex.id = blurTexID;
-        cmd.GetTemporaryRT(blurTex.id, cameraTextureDescriptor);
+        _blurTexID = Shader.PropertyToID("_BlurTex");
+        cmd.GetTemporaryRT(_blurTexID, cameraTextureDescriptor);
 
         base.Configure(cmd, cameraTextureDescriptor);
     }
 
     public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
     {
-        if (blurSettings == null || !blurSettings.IsActive())
+        if (renderingData.cameraData is { cameraType: CameraType.SceneView, postProcessEnabled: false })
+        {
+            return;
+        }
+        
+        if (_blurSettings == null || !_blurSettings.IsActive())
         {
             return;
         }
@@ -52,19 +55,19 @@ public class BlurRenderPass : ScriptableRenderPass
         CommandBuffer cmd = CommandBufferPool.Get("Blur Post Process");
 
         // Set Blur effect properties.
-        int gridSize = Mathf.CeilToInt(blurSettings.strength.value * 3.0f);
+        int gridSize = Mathf.CeilToInt(_blurSettings.strength.value * 3.0f);
 
         if(gridSize % 2 == 0)
         {
             gridSize++;
         }
 
-        material.SetInteger("_GridSize", gridSize);
-        material.SetFloat("_Spread", blurSettings.strength.value);
+        _material.SetInteger(GridSize, gridSize);
+        _material.SetFloat(Spread, _blurSettings.strength.value);
 
         // Execute effect using effect material with two passes.
-        cmd.Blit(source, blurTex.id, material, 0);
-        cmd.Blit(blurTex.id, source, material, 1);
+        cmd.Blit(_source, _blurTexID, _material, 0);
+        cmd.Blit(_blurTexID, _source, _material, 1);
 
         context.ExecuteCommandBuffer(cmd);
         cmd.Clear();
@@ -73,7 +76,7 @@ public class BlurRenderPass : ScriptableRenderPass
 
     public override void FrameCleanup(CommandBuffer cmd)
     {
-        cmd.ReleaseTemporaryRT(blurTexID);
+        cmd.ReleaseTemporaryRT(_blurTexID);
         base.FrameCleanup(cmd);
     }
 }
