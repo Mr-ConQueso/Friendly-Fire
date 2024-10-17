@@ -1,12 +1,15 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class BlinkTransition : MonoBehaviour
 {
     // ---- / Serialized Variables / ---- //
     [SerializeField] private float blinkDuration = 0.5f;
+    [SerializeField] private Volume volume;
     
     // ---- / Private Variables / ---- //
+    private BlurSettings _blurSettings;
     private Animator _animator;
     private bool _hasBlinked;
     
@@ -28,6 +31,10 @@ public class BlinkTransition : MonoBehaviour
     private void Start()
     {
         _animator = GetComponent<Animator>();
+        if (!volume.profile.TryGet<BlurSettings>(out _blurSettings))
+        {
+            Debug.LogError("Missing blur settings");
+        }
     }
 
     private void OnChangeTurn()
@@ -35,6 +42,19 @@ public class BlinkTransition : MonoBehaviour
         StartCoroutine(Blink(blinkDuration));
     }
 
+    private void StartBlinking()
+    {
+        _animator.SetTrigger("startBlink");
+        StartCoroutine(LerpBlur(0f, 15f));
+    }
+    
+    private void EndBlinking()
+    {
+        _animator.SetTrigger("endBlink");
+        _hasBlinked = false;
+        StartCoroutine(LerpBlur(15f, 0f));
+    }
+    
     private IEnumerator Blink(float duration)
     {
         StartBlinking();
@@ -63,14 +83,19 @@ public class BlinkTransition : MonoBehaviour
         EndBlinking();
     }
 
-    private void StartBlinking()
+    private IEnumerator LerpBlur(float startValue, float endValue)
     {
-        _animator.SetTrigger("startBlink");
-    }
-    
-    private void EndBlinking()
-    {
-        _animator.SetTrigger("endBlink");
-        _hasBlinked = false;
+        float elapsedTime = 0f;
+        float duration = _animator.GetCurrentAnimatorClipInfo(0).Length + 0.2f;
+        
+        while (elapsedTime < duration)
+        {
+            float t = elapsedTime / duration;
+            _blurSettings.strength.value = Mathf.Lerp(startValue, endValue, t);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        _blurSettings.strength.value = endValue;
     }
 }
