@@ -6,7 +6,7 @@ public class BlurRendererFeature : ScriptableRendererFeature
 
     public override void SetupRenderPasses(ScriptableRenderer renderer, in RenderingData renderingData)
     {
-        _blurRenderPass.Setup(renderer.cameraColorTarget, renderer);  // use of target after allocation
+        _blurRenderPass.Setup(renderer.cameraColorTargetHandle);  // use of target after allocation
     }
 
     public override void Create()
