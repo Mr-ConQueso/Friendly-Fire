@@ -53,7 +53,8 @@ MonoBehaviour:
     hdrDebugViewPS: {fileID: 4800000, guid: 573620ae32aec764abd4d728906d2587, type: 3}
   m_RendererFeatures:
   - {fileID: -1878332245247344467}
-  m_RendererFeatureMap: adc0de57c6d2eee5
+  - {fileID: 5460080047839113984}
+  m_RendererFeatureMap: adc0de57c6d2eee500f3a5f0df19c64b
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -112,3 +113,18 @@ MonoBehaviour:
   settings:
     renderPassEvent: 550
     screenHeight: 85
+--- !u!114 &5460080047839113984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30e2c553b8eb2afbfa8ff3d6093cb80a, type: 3}
+  m_Name: Blur
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  gaussianBlurShader: {fileID: 4800000, guid: 7e395fb51cae22d9e8e6f392717f1c2c, type: 3}
+  boxBlurShader: {fileID: 4800000, guid: ff1ac928bb4f47648b54f608c5d9d5f4, type: 3}

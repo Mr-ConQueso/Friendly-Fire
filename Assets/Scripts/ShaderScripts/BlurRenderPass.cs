@@ -12,7 +12,7 @@ public class BlurRenderPass : ScriptableRenderPass
     private static readonly int GridSize = Shader.PropertyToID("_GridSize");
     private static readonly int Spread = Shader.PropertyToID("_Spread");
 
-    public bool Setup(RenderTargetIdentifier renderTarget)
+    public bool Setup(RenderTargetIdentifier renderTarget, Shader gaussianBlurShader, Shader boxBlurShader)
     {
         _source = renderTarget;
         _blurSettings = VolumeManager.instance.stack.GetComponent<BlurSettings>();
@@ -20,7 +20,18 @@ public class BlurRenderPass : ScriptableRenderPass
 
         if (_blurSettings != null && _blurSettings.IsActive())
         {
-            _material = new Material(Shader.Find("PostProcessing/Blur"));
+            switch (_blurSettings.blurMode)
+            {
+                case BlurMode.GaussianBlur:
+                    _material = new Material(gaussianBlurShader);
+                    break;
+                case BlurMode.BoxBlur:
+                    _material = new Material(boxBlurShader);
+                    break;
+                default:
+                    _material = new Material(gaussianBlurShader);
+                    break;
+            }
             return true;
         }
 

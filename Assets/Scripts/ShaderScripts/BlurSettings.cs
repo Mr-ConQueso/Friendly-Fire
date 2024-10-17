@@ -8,6 +8,9 @@ public class BlurSettings : VolumeComponent, IPostProcessComponent
 {
     [Tooltip("Standard deviation (spread) of the blur. Grid size is approx. 3x larger.")]
     public ClampedFloatParameter strength = new ClampedFloatParameter(0.0f, 0.0f, 15.0f);
+    
+    [Tooltip("Select a blurring algorithm to use for the blurring process.")]
+    public BlurModeParameter blurMode = new BlurModeParameter(BlurMode.GaussianBlur);
 
     public bool IsActive()
     {
@@ -18,4 +21,15 @@ public class BlurSettings : VolumeComponent, IPostProcessComponent
     {
         return false;
     }
+}
+
+public sealed class BlurModeParameter : VolumeParameter<BlurMode>
+{
+    public BlurModeParameter(BlurMode value, bool overrideState = false) : base(value, overrideState) { }
+}
+
+public enum BlurMode
+{
+    GaussianBlur,
+    BoxBlur
 }
