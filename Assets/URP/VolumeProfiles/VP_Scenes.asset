@@ -45,8 +45,27 @@ MonoBehaviour:
     m_Value: {fileID: 0}
     dimension: 1
   dirtIntensity:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
+--- !u!114 &-7324986383994664789
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eacac785d397ccdf1b87ac9b7575ffd4, type: 3}
+  m_Name: BlurSettings
+  m_EditorClassIdentifier: 
+  active: 1
+  strength:
+    m_OverrideState: 1
+    m_Value: 15
+  blurMode:
+    m_OverrideState: 1
+    m_Value: 1
 --- !u!114 &-7011558710299706105
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -91,7 +110,7 @@ MonoBehaviour:
   - {fileID: 849379129802519247}
   - {fileID: -7893295128165547882}
   - {fileID: -7011558710299706105}
-  - {fileID: 848249920659855506}
+  - {fileID: -7324986383994664789}
 --- !u!114 &848249920659855506
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -108,6 +127,9 @@ MonoBehaviour:
   strength:
     m_OverrideState: 1
     m_Value: 15
+  blurMode:
+    m_OverrideState: 0
+    m_Value: 0
 --- !u!114 &849379129802519247
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -148,3 +170,60 @@ MonoBehaviour:
   maxNits:
     m_OverrideState: 0
     m_Value: 1000
+--- !u!114 &5083080157416117896
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eacac785d397ccdf1b87ac9b7575ffd4, type: 3}
+  m_Name: BlurSettings
+  m_EditorClassIdentifier: 
+  active: 1
+  strength:
+    m_OverrideState: 0
+    m_Value: 0
+  blurMode:
+    m_OverrideState: 0
+    m_Value: 0
+--- !u!114 &7858769687358475883
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eacac785d397ccdf1b87ac9b7575ffd4, type: 3}
+  m_Name: BlurSettings
+  m_EditorClassIdentifier: 
+  active: 1
+  strength:
+    m_OverrideState: 0
+    m_Value: 0
+  blurMode:
+    m_OverrideState: 0
+    m_Value: 0
+--- !u!114 &8337090536365355317
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eacac785d397ccdf1b87ac9b7575ffd4, type: 3}
+  m_Name: BlurSettings
+  m_EditorClassIdentifier: 
+  active: 1
+  strength:
+    m_OverrideState: 0
+    m_Value: 0
+  blurMode:
+    m_OverrideState: 0
+    m_Value: 0

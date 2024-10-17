@@ -20,7 +20,7 @@ public class BlurRenderPass : ScriptableRenderPass
 
         if (_blurSettings != null && _blurSettings.IsActive())
         {
-            switch (_blurSettings.blurMode)
+            switch (_blurSettings.blurMode.value)
             {
                 case BlurMode.GaussianBlur:
                     _material = new Material(gaussianBlurShader);

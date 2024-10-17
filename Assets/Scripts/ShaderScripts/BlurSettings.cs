@@ -23,7 +23,8 @@ public class BlurSettings : VolumeComponent, IPostProcessComponent
     }
 }
 
-public sealed class BlurModeParameter : VolumeParameter<BlurMode>
+[Serializable]
+public class BlurModeParameter : VolumeParameter<BlurMode>
 {
     public BlurModeParameter(BlurMode value, bool overrideState = false) : base(value, overrideState) { }
 }
