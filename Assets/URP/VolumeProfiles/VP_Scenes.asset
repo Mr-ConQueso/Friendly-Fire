@@ -62,7 +62,7 @@ MonoBehaviour:
   active: 1
   strength:
     m_OverrideState: 1
-    m_Value: 15
+    m_Value: 0
   blurMode:
     m_OverrideState: 1
     m_Value: 1

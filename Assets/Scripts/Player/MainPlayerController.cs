@@ -60,6 +60,9 @@ public class MainPlayerController : MonoBehaviour
         _currentPlayer1Health = maxPlayerHealth;
         _currentPlayer2Health = maxPlayerHealth;
         
+        DevConsole.RegisterConsoleCommand(this, "addhealth");
+        DevConsole.RegisterConsoleCommand(this, "removehealth");
+        
         RefreshHealthBar();
     }
 
@@ -121,5 +124,25 @@ public class MainPlayerController : MonoBehaviour
                 break;
         }
         playerGUIController.UpdateHealthBar(currentHealth, maxPlayerHealth);
+    }
+
+    private void OnConsoleCommand_addhealth(NotificationCenter.Notification n)
+    {
+        string text = (string)n.data[0];
+        if (!string.IsNullOrEmpty(text) && int.TryParse(text, out var result))
+        {
+            Debug.Log($"{result} health added to current player");
+            AddHealth(result);
+        }
+    }
+    
+    private void OnConsoleCommand_removehealth(NotificationCenter.Notification n)
+    {
+        string text = (string)n.data[0];
+        if (!string.IsNullOrEmpty(text) && int.TryParse(text, out var result))
+        {
+            Debug.Log($"{result} health removed from current player");
+            RemoveHealth(result);
+        }
     }
 }
