@@ -109,6 +109,7 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         StartGame();
+        DevConsole.RegisterConsoleCommand(this, "round");
     }
 
     private void Update()
@@ -157,6 +158,17 @@ public class GameController : MonoBehaviour
             SceneSwapManager.SwapScene("EndMenu");
             
             _isGameEnded = true;
+        }
+    }
+
+    private void OnConsoleCommand_round(NotificationCenter.Notification n)
+    {
+        string text = (string)n.data[0];
+        if (!string.IsNullOrEmpty(text) && int.TryParse(text, out var result))
+        {
+            Debug.Log("Current round set to: " + result);
+            OnChangeTurn?.Invoke();
+            CurrentRound = result;
         }
     }
 }
