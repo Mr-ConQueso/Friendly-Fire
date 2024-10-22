@@ -50,6 +50,20 @@ MonoBehaviour:
   m_Active: 1
   gaussianBlurShader: {fileID: 4800000, guid: 7e395fb51cae22d9e8e6f392717f1c2c, type: 3}
   boxBlurShader: {fileID: 4800000, guid: ff1ac928bb4f47648b54f608c5d9d5f4, type: 3}
+--- !u!114 &-341817800417713063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2c90075a48342648945b057b2a1ee76, type: 3}
+  m_Name: Pixelated
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  pixelatedShader: {fileID: 0}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,7 +83,8 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: -1878332245247344467}
   - {fileID: -1336885273602942604}
-  m_RendererFeatureMap: adc0de57c6d2eee574197241ed6d72ed
+  - {fileID: -341817800417713063}
+  m_RendererFeatureMap: adc0de57c6d2eee574197241ed6d72ed59643284859e41fb
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
