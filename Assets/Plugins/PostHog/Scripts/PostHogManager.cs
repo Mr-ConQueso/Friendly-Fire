@@ -1,7 +1,6 @@
 using System;
 using DotPostHog;
 using DotPostHog.Model;
-using Plugins.PostHog.Scripts;
 using UnityEngine;
 
 public class PostHogManager : MonoBehaviour
@@ -9,6 +8,9 @@ public class PostHogManager : MonoBehaviour
     public static PostHogManager Instance { get; private set; }
 
     private IPostHogAnalytics _postHogAnalytics;
+
+    [SerializeField]
+    private string postHogApiKey = "your-api-key-here";
     
     private void Awake()
     {
@@ -33,8 +35,7 @@ public class PostHogManager : MonoBehaviour
                 BatchSizeLimit = 1000,
                 Period = TimeSpan.FromSeconds(10)
             };
-            _postHogAnalytics = PostHogAnalytics.Create(APIKey.PostHogApiKey, batchConfig: batchConfig);
-            
+            _postHogAnalytics = PostHogAnalytics.Create(postHogApiKey, batchConfig: batchConfig);
             Debug.Log("PostHog Initialized successfully.");
         }
         catch (Exception ex)
@@ -49,9 +50,7 @@ public class PostHogManager : MonoBehaviour
 
         try
         {
-            var eventProperties = properties ?? new PostHogEventProperties();
-        
-            _postHogAnalytics.Capture(eventName, eventProperties);
+            _postHogAnalytics.Capture(eventName, properties);
         }
         catch (Exception ex)
         {
