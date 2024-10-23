@@ -132,6 +132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 747790913}
   - component: {fileID: 747790914}
+  - component: {fileID: 747790915}
   m_Layer: 0
   m_Name: PostHog
   m_TagString: Untagged
@@ -164,6 +165,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b9dbc06de37c190f6aa6dceed15fef7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &747790915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747790912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8ad68437fd44f1abee6061203afad23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1094286576
