@@ -128,7 +128,7 @@ public class MainPlayerController : MonoBehaviour
 
     private void OnConsoleCommand_addhealth(NotificationCenter.Notification n)
     {
-        string text = (string)n.data[0];
+        string text = (string)n.Data[0];
         if (!string.IsNullOrEmpty(text) && int.TryParse(text, out var result))
         {
             Debug.Log($"{result} health added to current player");
@@ -138,7 +138,7 @@ public class MainPlayerController : MonoBehaviour
     
     private void OnConsoleCommand_removehealth(NotificationCenter.Notification n)
     {
-        string text = (string)n.data[0];
+        string text = (string)n.Data[0];
         if (!string.IsNullOrEmpty(text) && int.TryParse(text, out var result))
         {
             Debug.Log($"{result} health removed from current player");

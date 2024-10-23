@@ -48,8 +48,7 @@ MonoBehaviour:
   m_Name: Blur
   m_EditorClassIdentifier: 
   m_Active: 1
-  gaussianBlurShader: {fileID: 4800000, guid: 7e395fb51cae22d9e8e6f392717f1c2c, type: 3}
-  boxBlurShader: {fileID: 4800000, guid: ff1ac928bb4f47648b54f608c5d9d5f4, type: 3}
+  blurShader: {fileID: 4800000, guid: 7e395fb51cae22d9e8e6f392717f1c2c, type: 3}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0

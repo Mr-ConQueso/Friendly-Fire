@@ -163,7 +163,7 @@ public class GameController : MonoBehaviour
 
     private void OnConsoleCommand_round(NotificationCenter.Notification n)
     {
-        string text = (string)n.data[0];
+        string text = (string)n.Data[0];
         if (!string.IsNullOrEmpty(text) && int.TryParse(text, out var result))
         {
             Debug.Log("Current round set to: " + result);
