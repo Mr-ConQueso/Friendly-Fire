@@ -26,7 +26,7 @@ public class MenuSelector : MonoBehaviour
 
     private void Start()
     {
-        List<Selectable> selectableChildren = CustomFunctions.GetComponentsInChildren<Selectable>(gameObject);
+        List<Selectable> selectableChildren = HelperFunctions.GetComponentsInChildren<Selectable>(gameObject);
     
         if (SelectableItems.Count == 0 && selectableChildren.Count > 0)
         {

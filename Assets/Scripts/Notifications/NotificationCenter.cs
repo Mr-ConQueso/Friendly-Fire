@@ -6,45 +6,42 @@ public class NotificationCenter : MonoBehaviour
 {
 	public class Notification
 	{
-		public Component sender;
-
-		public string name;
-
-		public Hashtable data;
+		public readonly Component Sender;
+		public string Name;
+		public Hashtable Data;
 
 		public C GetSenderComponent<C>() where C : Component
 		{
-			return sender.gameObject.GetComponent<C>();
+			return Sender.gameObject.GetComponent<C>();
 		}
 
 		public Notification(Component aSender, string aName)
 		{
-			sender = aSender;
-			name = aName;
-			data = null;
+			Sender = aSender;
+			Name = aName;
+			Data = null;
 		}
 
 		public Notification(Component aSender, string aName, Hashtable aData)
 		{
-			sender = aSender;
-			name = aName;
-			data = aData;
+			Sender = aSender;
+			Name = aName;
+			Data = aData;
 		}
 	}
 
-	private static NotificationCenter defaultCenter;
-
-	private Hashtable notifications = new Hashtable();
+	private static NotificationCenter _defaultCenter;
+	private readonly Hashtable _notifications = new Hashtable();
 
 	public static NotificationCenter DefaultCenter
 	{
 		get
 		{
-			if (!defaultCenter)
+			if (!_defaultCenter)
 			{
-				defaultCenter = new GameObject("Default Notification Center").AddComponent<NotificationCenter>();
+				_defaultCenter = new GameObject("Default Notification Center").AddComponent<NotificationCenter>();
 			}
-			return defaultCenter;
+			return _defaultCenter;
 		}
 	}
 
@@ -60,22 +57,22 @@ public class NotificationCenter : MonoBehaviour
 			Debug.Log("Null name specified for notification in AddObserver.");
 			return;
 		}
-		if (notifications[name] == null)
+		if (_notifications[name] == null)
 		{
-			notifications[name] = new HashSet<Component>();
+			_notifications[name] = new HashSet<Component>();
 		}
-		(notifications[name] as HashSet<Component>).Add(observer);
+		(_notifications[name] as HashSet<Component>)?.Add(observer);
 	}
 
 	public void RemoveObserver(Component observer, string name)
 	{
-		HashSet<Component> hashSet = (HashSet<Component>)notifications[name];
+		HashSet<Component> hashSet = (HashSet<Component>)_notifications[name];
 		if (hashSet != null)
 		{
 			hashSet.Remove(observer);
 			if (hashSet.Count == 0)
 			{
-				notifications.Remove(name);
+				_notifications.Remove(name);
 			}
 		}
 	}
@@ -92,15 +89,15 @@ public class NotificationCenter : MonoBehaviour
 
 	public void PostNotification(Notification aNotification)
 	{
-		if (string.IsNullOrEmpty(aNotification.name))
+		if (string.IsNullOrEmpty(aNotification.Name))
 		{
 			Debug.Log("Null name sent to PostNotification.");
 			return;
 		}
-		HashSet<Component> hashSet = (HashSet<Component>)notifications[aNotification.name];
+		HashSet<Component> hashSet = (HashSet<Component>)_notifications[aNotification.Name];
 		if (hashSet == null)
 		{
-			Debug.Log("Notify list not found in PostNotification: " + aNotification.name);
+			Debug.Log("Notify list not found in PostNotification: " + aNotification.Name);
 			return;
 		}
 		List<Component> list = new List<Component>();
@@ -112,7 +109,7 @@ public class NotificationCenter : MonoBehaviour
 			}
 			else
 			{
-				item.SendMessage(aNotification.name, aNotification, SendMessageOptions.DontRequireReceiver);
+				item.SendMessage(aNotification.Name, aNotification, SendMessageOptions.DontRequireReceiver);
 			}
 		}
 		foreach (Component item2 in list)
