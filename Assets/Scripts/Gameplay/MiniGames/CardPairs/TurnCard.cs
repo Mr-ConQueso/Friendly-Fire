@@ -1,89 +1,110 @@
+using System;
+using System.Collections;
+using Gameplay.Helper;
+using Gameplay.MiniGames.CardPairs;
 using UnityEngine;
 
-public class TurnCard : MonoBehaviour
+public class TurnCard : HoverableObject
 {
     // ---- / Static Variables / ---- //
     private static readonly int TurnDown = Animator.StringToHash("turnDown");
     private static readonly int TurnUp = Animator.StringToHash("turnUp");
     
-    // ---- / Serialized Variables / ---- //
-    [SerializeField] private float lerpDuration = 0.5f;
-    [SerializeField] private Vector3 endPosition;
-    [SerializeField] private float endScale;
-    
     // ---- / Private Variables / ---- //
     private Animator _animator;
-    private bool _isTurnedUp;
-    private Vector3 _startPosition;
-    private Vector3 _startScale;
-    private float _lerpTime = 0f;
-    private bool _isLerping = false;
-    private bool _isReversing = false; 
+    private RandomizeCardType _randomizeCardType;
+    private bool _isTurnedUp = false;
     
     private void Awake()
     {
         _animator = GetComponent<Animator>();
+        _randomizeCardType = GetComponent<RandomizeCardType>();
+        CardPairsController.OnTurnAllCards += OnTurnAllCards;
+        CardPairsController.OnResetAllCards += OnResetAllCards;
+        CardPairsController.OnSetCardsInteractable += OnSetCardsInteractable;
     }
 
-    private void Start()
+    private void OnDestroy()
     {
-        _startPosition = transform.position;
-        _startScale = transform.localScale;
-    }
-
-    private void Update()
-    {
-        if (_isLerping || _isReversing)
-        {
-            _lerpTime += Time.deltaTime / lerpDuration;
-
-            if (_lerpTime <= 1f)
-            {
-                if (_isLerping)
-                {
-                    transform.position = Vector3.Lerp(_startPosition, endPosition, _lerpTime);
-                    transform.localScale = Vector3.Lerp(_startScale, _startScale * endScale, _lerpTime);
-                }
-                else if (_isReversing)
-                {
-                    transform.position = Vector3.Lerp(endPosition, _startPosition, _lerpTime);
-                    transform.localScale = Vector3.Lerp(_startScale * endScale, _startScale, _lerpTime);
-                }
-            }
-            else
-            {
-                _isLerping = false;
-                _isReversing = false;
-                _lerpTime = 0f;
-            }
-        }
-    }
-
-    private void OnMouseEnter()
-    {
-        _isLerping = true;
-        _isReversing = false;
-        _lerpTime = 0f;
-    }
-
-    private void OnMouseExit()
-    {
-        _isReversing = true;
-        _isLerping = false;
-        _lerpTime = 0f;
+        CardPairsController.OnTurnAllCards -= OnTurnAllCards;
+        CardPairsController.OnResetAllCards -= OnResetAllCards;
+        CardPairsController.OnSetCardsInteractable -= OnSetCardsInteractable;
     }
 
     private void OnMouseDown()
     {
+        if (IsInteractable)
+        {
+            StartCoroutine(HandleCardTurn());
+        }
+    }
+
+    private IEnumerator HandleCardTurn()
+    {
+        while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f && !_animator.IsInTransition(0))
+        {
+            yield return null;
+        }
+
         if (!_isTurnedUp)
         {
-            _animator.SetTrigger(TurnUp);
-            _isTurnedUp = true;
+            TurnCardUp();
+            CardPairsController.Instance.CurrentTurnedCards.Add(_randomizeCardType.CurrentCardType);
         }
         else
         {
-            _animator.SetTrigger(TurnDown);
-            _isTurnedUp = false;
+            TurnCardDown();
+            CardPairsController.Instance.CurrentTurnedCards.Remove(_randomizeCardType.CurrentCardType);
         }
+    }
+
+    private void OnTurnAllCards(bool willTurnUp, bool keepPreviousCards)
+    {
+        if (keepPreviousCards && CardPairsController.Instance.CurrentTurnedCards.Contains(_randomizeCardType.CurrentCardType))
+        {
+            CardPairsController.Instance.CompletedCards.Add(gameObject);
+            DisableInteractable();
+        }
+        else if (IsInteractable)
+        {
+            if (willTurnUp && !_isTurnedUp)
+            {
+                TurnCardUp();
+            }
+            else if (!willTurnUp && _isTurnedUp)
+            {
+                TurnCardDown();
+            }
+        }
+    }
+    
+    private void OnSetCardsInteractable(bool isinteractable)
+    {
+        if (isinteractable && !CardPairsController.Instance.CompletedCards.Contains(gameObject))
+        {
+            IsInteractable = true;
+        }
+        else
+        {
+            DisableInteractable();
+        } 
+    }
+    
+    private void OnResetAllCards()
+    {
+        IsInteractable = true;
+        TurnCardDown();
+    }
+    
+    private void TurnCardUp()
+    {
+        _animator.SetTrigger(TurnUp);
+        _isTurnedUp = true;
+    }
+    
+    private void TurnCardDown()
+    {
+        _animator.SetTrigger(TurnDown);
+        _isTurnedUp = false;
     }
 }
