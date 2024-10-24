@@ -6,36 +6,37 @@ namespace Gameplay.MiniGames.CardPairs
 {
     public class RandomizeCardType : MonoBehaviour
     {
-        // ---- / Private Variables / ---- //
-        private CardType _cardType;
-        private MeshRenderer _meshRenderer;
+        // ---- / Public Variables / ---- //
+        [HideInInspector] public CardType CurrentCardType;
+        
+        // ---- / Serialized Variables / ---- //
+        [SerializeField] private MeshRenderer cardFaceMeshRenderer;
 
         private void Awake()
         {
-            _meshRenderer = GetComponentInChildren<MeshRenderer>();
-            RandomizeCards.OnRandomizeCards += OnRandomizeCards;
+            CardPairsController.OnRandomizeCards += OnRandomizeCards;
         }
 
         private void OnDestroy()
         {
-            RandomizeCards.OnRandomizeCards -= OnRandomizeCards;
+            CardPairsController.OnRandomizeCards -= OnRandomizeCards;
         }
 
         private void OnRandomizeCards()
         {
             do
             {
-                _cardType = GetRandomCardType();
+                CurrentCardType = GetRandomCardType();
                 
-            } while (RandomizeCards.Instance.GetCardTypeCount(_cardType) >= RandomizeCards.Instance.CardsPerType);
+            } while (CardPairsController.Instance.GetCardTypeCount(CurrentCardType) >= CardPairsController.Instance.CardsPerType);
             
-            RandomizeCards.Instance.CardTypes.Add(_cardType);
-            _meshRenderer.material.color = GetRandomColor();
+            CardPairsController.Instance.CardTypes.Add(CurrentCardType);
+            cardFaceMeshRenderer.material.color = GetRandomColor();
         }
 
         private Color GetRandomColor()
         {
-            switch (_cardType)
+            switch (CurrentCardType)
             {
                 case CardType.Red:
                     return Color.red;
