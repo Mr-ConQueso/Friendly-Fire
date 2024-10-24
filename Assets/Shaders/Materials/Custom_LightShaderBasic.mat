@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Custom_LambertShaderBasic
-  m_Shader: {fileID: 4800000, guid: d7ad848bb661df34a8c513297e656371, type: 3}
+  m_Name: Custom_LightShaderBasic
+  m_Shader: {fileID: 4800000, guid: f39cd8f312651c14888155df759f9a93, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
