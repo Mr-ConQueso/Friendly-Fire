@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,6 +7,10 @@ public class RandomizeCards : MonoBehaviour
 {
     // ---- / Singleton / ---- //
     public static RandomizeCards Instance;
+    
+    // ---- / Events / ---- //
+    public delegate void RandomizeCardsEventHandler();
+    public static event RandomizeCardsEventHandler OnRandomizeCards;
     
     // ---- / Public Variables / ---- //
     [SerializeField] public int CardsPerType;
@@ -23,6 +28,18 @@ public class RandomizeCards : MonoBehaviour
         {
             Instance = this;
         }
+    }
+
+    private void Start()
+    {
+        OnRandomizeCards?.Invoke();
+        DevConsole.RegisterConsoleCommand(this, "randomizecards");
+    }
+    
+    private void OnConsoleCommand_randomizecards(NotificationCenter.Notification n)
+    {
+        CardTypes.Clear();
+        OnRandomizeCards?.Invoke();
     }
 }
 
