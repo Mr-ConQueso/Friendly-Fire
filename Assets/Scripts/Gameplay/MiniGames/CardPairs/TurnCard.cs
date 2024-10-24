@@ -35,26 +35,16 @@ public class TurnCard : HoverableObject
     {
         if (IsInteractable)
         {
-            StartCoroutine(HandleCardTurn());
-        }
-    }
-
-    private IEnumerator HandleCardTurn()
-    {
-        while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f && !_animator.IsInTransition(0))
-        {
-            yield return null;
-        }
-
-        if (!_isTurnedUp)
-        {
-            TurnCardUp();
-            CardPairsController.Instance.CurrentTurnedCards.Add(_randomizeCardType.CurrentCardType);
-        }
-        else
-        {
-            TurnCardDown();
-            CardPairsController.Instance.CurrentTurnedCards.Remove(_randomizeCardType.CurrentCardType);
+            if (!_isTurnedUp)
+            {
+                TurnCardUp();
+                CardPairsController.Instance.CurrentTurnedCards.Add(_randomizeCardType.CurrentCardType);
+            }
+            else
+            {
+                TurnCardDown();
+                CardPairsController.Instance.CurrentTurnedCards.Remove(_randomizeCardType.CurrentCardType);
+            }
         }
     }
 

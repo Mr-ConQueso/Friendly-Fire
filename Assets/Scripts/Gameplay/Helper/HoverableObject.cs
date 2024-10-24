@@ -10,8 +10,8 @@ namespace Gameplay.Helper
         
         // ---- / Serialized Variables / ---- //
         [SerializeField] private float lerpDuration = 0.5f;
-        [SerializeField] private Vector3 endPosition;
-        [SerializeField] private float endScale;
+        [SerializeField] private Vector3 endPosition = Vector3.zero;
+        [SerializeField] private float endScale = 1.0f;
     
         // ---- / Private Variables / ---- //
         private Vector3 _startPosition;
