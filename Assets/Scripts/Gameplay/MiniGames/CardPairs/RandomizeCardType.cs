@@ -13,15 +13,21 @@ namespace Gameplay.MiniGames.CardPairs
         private void Awake()
         {
             _meshRenderer = GetComponentInChildren<MeshRenderer>();
+            RandomizeCards.OnRandomizeCards += OnRandomizeCards;
         }
 
-        private void Start()
+        private void OnDestroy()
+        {
+            RandomizeCards.OnRandomizeCards -= OnRandomizeCards;
+        }
+
+        private void OnRandomizeCards()
         {
             do
             {
                 _cardType = GetRandomCardType();
                 
-            } while (RandomizeCards.Instance.GetCardTypeCount(_cardType) > RandomizeCards.Instance.CardsPerType);
+            } while (RandomizeCards.Instance.GetCardTypeCount(_cardType) >= RandomizeCards.Instance.CardsPerType);
             
             RandomizeCards.Instance.CardTypes.Add(_cardType);
             _meshRenderer.material.color = GetRandomColor();
@@ -42,7 +48,7 @@ namespace Gameplay.MiniGames.CardPairs
                 case CardType.Purple:
                     return Color.magenta;
                 case CardType.Orange:
-                    return new Color(255, 129, 0, 1);
+                    return Color.black;
                 default:
                     return Color.white; 
             }
