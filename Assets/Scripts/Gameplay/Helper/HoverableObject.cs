@@ -5,49 +5,39 @@ namespace Gameplay.Helper
 {
     public class HoverableObject : MonoBehaviour, IHoverable
     {
+        // ---- / Serialized Variables / ---- //
+        [SerializeField] protected float lerpDuration = 0.5f;
+        [SerializeField] protected Vector3 endPosition = Vector3.zero;
+        [SerializeField] protected float endScale = 1.0f;
+        
         // ---- / Protected Variables / ---- //
         [HideInInspector] protected bool IsInteractable = true;
+        [HideInInspector] protected Vector3 StartPosition;
+        [HideInInspector] protected Vector3 StartScale;
+        [HideInInspector] protected Coroutine CurrentCoroutine;
         
-        // ---- / Serialized Variables / ---- //
-        [SerializeField] private float lerpDuration = 0.5f;
-        [SerializeField] private Vector3 endPosition = Vector3.zero;
-        [SerializeField] private float endScale = 1.0f;
-    
-        // ---- / Private Variables / ---- //
-        private Vector3 _startPosition;
-        private Vector3 _startScale;
-        private Coroutine _currentCoroutine;
-
         protected virtual void Start()
         {
-            _startPosition = transform.position;
-            _startScale = transform.localScale;
+            StartPosition = transform.position;
+            StartScale = transform.localScale;
         }
     
-        public void OnMouseEnter()
+        public virtual void OnMouseEnter()
         {
-            if (IsInteractable)
-            {
-                if (_currentCoroutine != null)
-                {
-                    StopCoroutine(_currentCoroutine);
-                }
-                _currentCoroutine = StartCoroutine(LerpTo(_startPosition + endPosition, _startScale * endScale));
-            }
+            if (!IsInteractable) return;
+            if (CurrentCoroutine != null) StopCoroutine(CurrentCoroutine);
+            
+            CurrentCoroutine = StartCoroutine(LerpTo(StartPosition + endPosition, StartScale * endScale));
         }
 
-        public void OnMouseOver() {}
+        public virtual void OnMouseOver() {}
 
-        public void OnMouseExit()
+        public virtual void OnMouseExit()
         {
-            if (IsInteractable)
-            {
-                if (_currentCoroutine != null)
-                {
-                    StopCoroutine(_currentCoroutine);
-                }
-                _currentCoroutine = StartCoroutine(LerpTo(_startPosition, _startScale));
-            }
+            if (!IsInteractable) return;
+            if (CurrentCoroutine != null) StopCoroutine(CurrentCoroutine);
+            
+            CurrentCoroutine = StartCoroutine(LerpTo(StartPosition, StartScale));
         }
         
         protected void DisableInteractable()
@@ -56,7 +46,7 @@ namespace Gameplay.Helper
             StartCoroutine(ReverseToStart());
         }
 
-        private IEnumerator LerpTo(Vector3 targetPosition, Vector3 targetScale)
+        protected IEnumerator LerpTo(Vector3 targetPosition, Vector3 targetScale)
         {
             float elapsedTime = 0f;
             Vector3 initialPosition = transform.position;
@@ -76,13 +66,13 @@ namespace Gameplay.Helper
 
         private IEnumerator ReverseToStart()
         {
-            if (_currentCoroutine != null)
+            if (CurrentCoroutine != null)
             {
-                StopCoroutine(_currentCoroutine);
+                StopCoroutine(CurrentCoroutine);
             }
-            _currentCoroutine = StartCoroutine(LerpTo(_startPosition, _startScale));
-            yield return _currentCoroutine;
-            _currentCoroutine = null;
+            CurrentCoroutine = StartCoroutine(LerpTo(StartPosition, StartScale));
+            yield return CurrentCoroutine;
+            CurrentCoroutine = null;
         }
     }
 }

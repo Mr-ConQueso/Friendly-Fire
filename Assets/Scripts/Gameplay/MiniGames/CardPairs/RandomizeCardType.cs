@@ -11,6 +11,7 @@ namespace Gameplay.MiniGames.CardPairs
         
         // ---- / Serialized Variables / ---- //
         [SerializeField] private MeshRenderer cardFaceMeshRenderer;
+        [SerializeField] private Material[] cardFaceMaterial;
 
         private void Awake()
         {
@@ -31,27 +32,27 @@ namespace Gameplay.MiniGames.CardPairs
             } while (CardPairsController.Instance.GetCardTypeCount(CurrentCardType) >= CardPairsController.Instance.CardsPerType);
             
             CardPairsController.Instance.CardTypes.Add(CurrentCardType);
-            cardFaceMeshRenderer.material.color = GetRandomColor();
+            cardFaceMeshRenderer.material = GetRandomMaterial();
         }
 
-        private Color GetRandomColor()
+        private Material GetRandomMaterial()
         {
             switch (CurrentCardType)
             {
                 case CardType.Red:
-                    return Color.red;
+                    return cardFaceMaterial[0];
                 case CardType.Green:
-                    return Color.green;
+                    return cardFaceMaterial[1];
                 case CardType.Blue:
-                    return Color.blue;
+                    return cardFaceMaterial[2];
                 case CardType.Yellow:
-                    return Color.yellow;
+                    return cardFaceMaterial[3];
                 case CardType.Purple:
-                    return Color.magenta;
+                    return cardFaceMaterial[4];
                 case CardType.Orange:
-                    return Color.black;
+                    return cardFaceMaterial[5];
                 default:
-                    return Color.white; 
+                    return cardFaceMaterial[0]; 
             }
         }
 
