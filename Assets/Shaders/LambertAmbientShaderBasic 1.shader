@@ -29,7 +29,7 @@ Shader "Custom/LambertShaderBasic"{
                 
                 float3 normalDirection = normalize( mul(float4(input.normal, 0.0), unity_WorldToObject).xyz);
                 float3 lightDirection;
-                float atten = 1.0;
+                float atten = 1.0;  
                 
                 lightDirection =  normalize(_WorldSpaceLightPos0.xyz);
 
@@ -47,5 +47,5 @@ Shader "Custom/LambertShaderBasic"{
             
         }
     }
-    //Fallback "Diffuse"
+    Fallback "Diffuse"
 }
