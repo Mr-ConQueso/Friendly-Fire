@@ -34,7 +34,7 @@ Shader "Custom/LambertAmbientShaderBasic"{
                 lightDirection =  normalize(_WorldSpaceLightPos0.xyz);
 
                 float3 diffuseReflection = atten * _LightColor0.rgb * max(0.0, dot(normalDirection, lightDirection));
-                float3 lightFinal = diffuseReflection + UNITY_LIGHTMODEL_AMBIENT.xyz;
+                float3 lightFinal = diffuseReflection + unity_AmbientEquator;
 
                 o.color = float4(lightFinal, 1.0);
                 o.pos = UnityObjectToClipPos(input.vertex);
