@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Custom_LambertShaderBasic
-  m_Shader: {fileID: 4800000, guid: d7ad848bb661df34a8c513297e656371, type: 3}
+  m_Name: Specular Material 1
+  m_Shader: {fileID: 4800000, guid: c82ff1f30e9a9d644b4ec6155420e530, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -24,7 +24,10 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _Shiniess: 3
+    - _Shininess: 16
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
