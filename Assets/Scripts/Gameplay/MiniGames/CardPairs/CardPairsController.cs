@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -72,7 +73,8 @@ public class CardPairsController : MonoBehaviour
 
         if (CompletedCards.Count >= _totalCardCount)
         {
-            Invoke(nameof(ResetAllCards), doubleCardLookTime);
+            StartCoroutine(ResetAllCards());
+            CompletedCards.Clear();
             OnSetCardsInteractable?.Invoke(false);
         }
     }
@@ -83,14 +85,16 @@ public class CardPairsController : MonoBehaviour
         OnSetCardsInteractable?.Invoke(true);
         CurrentTurnedCards.Clear();
     }
-    
-    private void ResetAllCards()
+
+    private IEnumerator ResetAllCards()
     {
+        yield return new WaitForSeconds(doubleCardLookTime);
         OnResetAllCards?.Invoke();
         OnSetCardsInteractable?.Invoke(true);
-        CompletedCards.Clear();
-        
         CardTypes.Clear();
+        
+        yield return new WaitForSeconds(1.0f);
+
         OnRandomizeCards?.Invoke();
     }
     

@@ -773,7 +773,10 @@ MonoBehaviour:
   - {fileID: 464353062}
   - {fileID: 174164462}
   maxRounds: 10
-  timeBetweeenRounds: 0.5
+  rotationDuration: 0.4
+  timeBetweenRounds: 0.15
+  ballPrefab: {fileID: 1207113266300896886, guid: a68eeecb043e04c4ab32e87f54a2ec6d,
+    type: 3}
 --- !u!4 &1994573620
 Transform:
   m_ObjectHideFlags: 0

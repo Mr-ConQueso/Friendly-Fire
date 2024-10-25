@@ -50,6 +50,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurrentCardType: 0
   cardFaceMeshRenderer: {fileID: 2110808864360188998}
+  cardFaceMaterial:
+  - {fileID: 2100000, guid: 40a3f1d6fd401da4aa7711c4471a2b0d, type: 2}
+  - {fileID: 2100000, guid: 9d1d79474ef6d674586c065a2d7c3a1d, type: 2}
+  - {fileID: 2100000, guid: aeebed9fce37a6146a3f705d58c40696, type: 2}
+  - {fileID: 2100000, guid: 07d6f214a93c8514b84b604ba86d55a6, type: 2}
+  - {fileID: 2100000, guid: efe713bc25ffc4049bdf78ec45e41d98, type: 2}
+  - {fileID: 2100000, guid: 23a81b4997229bb4da7f2a95bb667fed, type: 2}
 --- !u!114 &2899493814763264350
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -35,7 +35,14 @@ public class SequenceController : MonoBehaviour
     
     private void Start()
     {
+        if (SequencedObjects.Count < maxRounds)
+        {
+            Debug.LogError("More rounds than objects, this will lead to repetition in the sequence");
+            return;
+        }
+        
         DevConsole.RegisterConsoleCommand(this, "restartsequence");
+        
         StartNewGame();
     }
 
@@ -52,7 +59,13 @@ public class SequenceController : MonoBehaviour
     {
         for (int i = 0; i < maxRounds; i++)
         {
-            int randomIndex = Random.Range(0, SequencedObjects.Count);
+            int randomIndex = 0;
+            do
+            {
+                randomIndex = Random.Range(0, SequencedObjects.Count);
+
+            } while (_currentSequence.Contains(randomIndex));
+            
             _currentSequence.Add(randomIndex);
             SequencedObjects[randomIndex].ObjectIndex = randomIndex;
         }

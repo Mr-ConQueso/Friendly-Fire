@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using Gameplay.Helper;
 using Gameplay.MiniGames.CardPairs;
 using UnityEngine;
