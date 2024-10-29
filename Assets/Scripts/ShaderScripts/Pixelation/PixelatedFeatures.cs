@@ -19,7 +19,7 @@ public class PixelatedFeatures : ScriptableRendererFeature
     {
         var pixelatedSettings = VolumeManager.instance.stack.GetComponent<PixelatedBehaviour>();
 
-        if (pixelatedSettings.intensity != null && customPass.Setup(pixelatedSettings))
+        if (pixelatedSettings.PixelResolution != null && customPass.Setup(pixelatedSettings))
         {
             renderer.EnqueuePass(customPass);
         }
