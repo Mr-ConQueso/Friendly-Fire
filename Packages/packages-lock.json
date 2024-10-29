@@ -1,5 +1,19 @@
 {
   "dependencies": {
+    "com.github.superunitybuild.buildactions": {
+      "version": "file:buildactions-4.0.1",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.github.superunitybuild.buildtool": "7.0.0"
+      }
+    },
+    "com.github.superunitybuild.buildtool": {
+      "version": "file:buildtool-7.0.0",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.unity.burst": {
       "version": "1.8.17",
       "depth": 1,
