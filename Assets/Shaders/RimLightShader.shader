@@ -7,7 +7,7 @@ Shader "Custom/Rim Light Shader"{
         _RimLightPower ("RimLightPower", Range(0.1, 10.0)) = 3.0
     }
     SubShader{
-        //Tags{ "LightMode" = "ForwardBase"}
+        Tags{ "Rendering" = "Opaque" "LightMode" = "UniversalForward"}
         Pass{
             CGPROGRAM
             //pragmas

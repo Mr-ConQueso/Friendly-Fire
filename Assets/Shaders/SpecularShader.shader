@@ -5,7 +5,7 @@ Shader "Custom/Specular Shader"{
         _Shininess ("Shine", Float) = 3
     }
     SubShader{
-        //Tags{ "LightMode" = "ForwardBase"}
+        Tags{ "LightMode" = "UniversalForward"}
         Pass{
             CGPROGRAM
             //pragmas

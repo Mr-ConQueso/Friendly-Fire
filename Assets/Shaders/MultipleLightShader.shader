@@ -7,12 +7,18 @@ Shader "Custom/MultipleLight"{
         _RimLightPower ("RimLightPower", Range(0.1, 10.0)) = 3.0
     }
     SubShader{
-        //Tags{ "LightMode" = "ForwardBase"}
+        Tags{ 
+            "RenderType" = "Opaque"
+        }
+
         Pass{
+            Tags{ "LightMode" = "UniversalForward" }
+            Name "ForwardBase"
             CGPROGRAM
             //pragmas
             #pragma vertex vert
             #pragma fragment frag
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS
             //user defined variables
             uniform float4 _Color;
             uniform float4 _SpecColor;
@@ -48,8 +54,8 @@ Shader "Custom/MultipleLight"{
                 float3 lightDirection = normalize(_WorldSpaceLightPos0.xyz);
                 float atten = 1.0;
                 //Lighting
-                float3 diffuseReflection = atten * _LightColor0.xyz * saturate(dot(normalDirection, lightDirection));
-                float3 specularReflection = atten * saturate(dot(normalDirection, lightDirection)) * pow(saturate(dot(reflect(-lightDirection, normalDirection) , viewDirection)), _Shininess);
+                float3 diffuseReflection =  atten * _LightColor0.xyz * saturate(dot(normalDirection, lightDirection));
+                float3 specularReflection = atten * saturate(dot(normalDirection, lightDirection)) * pow(saturate(dot(reflect(-lightDirection, normalDirection) , viewDirection)), _Shininess) * _SpecColor.xyz;
                 //rim light
                 float3 rim = 1 - dot(normalize(viewDirection), normalDirection);
                 float3 rimLight = atten * _LightColor0.xyz * saturate(dot(normalDirection, lightDirection)) * pow(rim, _RimLightPower) * _RimLightColor.xyz;
@@ -58,12 +64,16 @@ Shader "Custom/MultipleLight"{
             }
             ENDCG
         }
+        
         Pass{
+            Tags{ "LightMode" = "UniversalForwardAdd" }
+            Name "ForwardAdd"
             Blend One One
             CGPROGRAM
             //pragmas
             #pragma vertex vert
             #pragma fragment frag
+            #pragma multi_compile_fwdadd_fullshadows
             //user defined variables
             uniform float4 _Color;
             uniform float4 _SpecColor;
@@ -96,7 +106,7 @@ Shader "Custom/MultipleLight"{
                 //vectors
                 float3 normalDirection = i.normalDir;
                 float3 viewDirection = normalize(_WorldSpaceCameraPos.xyz - i.posWorld.xyz);
-                float3 lightDirection = normalize(_WorldSpaceLightPos0.xyz);
+                float3 lightDirection = normalize(_WorldSpaceLightPos0.xyz );
                 float atten = 1.0;
                 //Lighting
                 float3 diffuseReflection = atten * _LightColor0.xyz * saturate(dot(normalDirection, lightDirection));
@@ -109,6 +119,7 @@ Shader "Custom/MultipleLight"{
             }
             ENDCG
         }
+            
     }
     Fallback "Specular"
 }
