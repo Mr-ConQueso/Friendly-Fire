@@ -41,7 +41,7 @@ public class PixelatedPass : ScriptableRenderPass
         // Check if pixelation is active
         if (settings != null && settings.IsActive())
         {
-            width = settings.intensity.value;
+            width = settings.PixelResolution.value;
             height = width * Screen.height / Screen.width;
         }
         else
