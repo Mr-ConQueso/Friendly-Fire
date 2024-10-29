@@ -1,0 +1,445 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7189283039407445916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2786f6b2301a94f4288672ff5305244c, type: 3}
+  m_Name: PC
+  m_EditorClassIdentifier: 
+  enabled: 1
+  distributionList:
+    distributions: []
+  architectures:
+  - target: 5
+    name: Windows x86
+    enabled: 1
+    binaryNameFormat: '{0}.exe'
+  - target: 19
+    name: Windows x64
+    enabled: 1
+    binaryNameFormat: '{0}.exe'
+  variants:
+  - variantName: Build Output
+    selectedIndex: 0
+    values:
+    - App
+    - Visual Studio Solution
+    isFlag: 0
+  scriptingBackends:
+  - scriptingImplementation: 0
+    name: Mono
+    enabled: 0
+  - scriptingImplementation: 1
+    name: IL2CPP
+    enabled: 1
+  platformName: PC
+  targetGroup: 1
+--- !u!114 &-2969731488943335311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0acaf75cc66fc934ea46bf602fc7c245, type: 3}
+  m_Name: WebGL
+  m_EditorClassIdentifier: 
+  enabled: 1
+  distributionList:
+    distributions: []
+  architectures:
+  - target: 20
+    name: WebGL
+    enabled: 1
+    binaryNameFormat: '{0}'
+  variants: []
+  scriptingBackends:
+  - scriptingImplementation: 1
+    name: IL2CPP
+    enabled: 1
+  platformName: WebGL
+  targetGroup: 13
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d5886119a5c7b34d8872ab527ca3e1b, type: 3}
+  m_Name: SuperUnityBuildSettings
+  m_EditorClassIdentifier: 
+  _basicSettings:
+    baseBuildFolder: Builds
+    buildPath: $PLATFORM/$RELEASE_TYPE/$VERSION/
+    openFolderPostBuild: 1
+    constantsFileLocation: Assets/Plugins/SuperUnityBuild
+  _productParameters:
+    buildCounter: 1
+    buildVersion: 1.1
+    versionTemplate: 1.$BUILD
+    autoGenerate: 1
+    syncWithPlayerSettings: 0
+  _releaseTypeList:
+    releaseTypes:
+    - typeName: Release
+      bundleIdentifier: net.cheesylabs.rescuegame
+      companyName: DefaultCompany
+      productName: RescueGame
+      syncAppNameWithProduct: 1
+      appBuildName: RescueGame
+      buildOptions: 0
+      customDefines: 
+      sceneList:
+        releaseScenes:
+        - fileGUID: 443d3f60753dff5318bb86e57d2f8112
+          sceneActive: 1
+        - fileGUID: a6433ef42ffa0463bba4fa1165df5e05
+          sceneActive: 1
+        - fileGUID: 4a129f0d7381bbe94aff7ab27e7bb02f
+          sceneActive: 1
+    - typeName: Development
+      bundleIdentifier: net.cheesylabs.rescuegame
+      companyName: DefaultCompany
+      productName: RescueGame
+      syncAppNameWithProduct: 1
+      appBuildName: RescueGame
+      buildOptions: 769
+      customDefines: 
+      sceneList:
+        releaseScenes: []
+  _platformList:
+    platforms:
+    - {fileID: 8036103815543175476}
+    - {fileID: 104590507181996566}
+    - {fileID: -7189283039407445916}
+    - {fileID: -2969731488943335311}
+  _projectConfigurations:
+    configSet:
+      _Buckets: 0b000000ffffffffffffffff17000000ffffffffffffffff12000000ffffffffffffffff19000000ffffffff10000000ffffffffffffffff1b000000130000000c000000110000001d0000001c0000001800000006000000ffffffffffffffffffffffff05000000ffffffffffffffff1a0000000a000000ffffffff030000001600000009000000ffffffffffffffffffffffff
+      _HashCodes: 8887c937134e5c09fe3787567e1c0b6453577a27ed64316dfadfe86db3f3dc637a64f009878a7279510e9f59f27e482d6d38f6476da5e2352d6dfd486870132df15e3a406271f95ec63b24421d9f665453b5ba3aea10ca7f71c76776f665e40829c6d86083c47952ee76e108a728bd13b7d47a29a767614900000000000000000000000000000000000000000000000000000000
+      _Next: ffffffffffffffff00000000ffffffffffffffffffffffffffffffff0400000001000000ffffffffffffffff08000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff0700000002000000140000000d000000ffffffffffffffffffffffffffffffff0e0000000f0000001500000000000000000000000000000000000000000000000000000000000000
+      _Count: 30
+      _Version: 30
+      _FreeList: -1
+      _FreeCount: 0
+      _Keys:
+      - Release/Linux/Linux x64/IL2CPP
+      - Release/Linux/Linux x64
+      - Release/Linux
+      - Release/Android/Android (ARMv7+ARM64+X86+X86_64,Generic,App,AAB,Single Binary,Auto,Auto,Public)/IL2CPP
+      - Release/Android/Android (ARMv7+ARM64+X86+X86_64,Generic,App,AAB,Single Binary,Auto,Auto,Public)
+      - Release/Android
+      - Release/PC/Windows x86 (App)/IL2CPP
+      - Release/PC/Windows x86 (App)
+      - Release/PC/Windows x64 (App)/IL2CPP
+      - Release/PC/Windows x64 (App)
+      - Release/PC
+      - Release/WebGL/WebGL/IL2CPP
+      - Release/WebGL/WebGL
+      - Release/WebGL
+      - Release
+      - Development/Linux/Linux x64/IL2CPP
+      - Development/Linux/Linux x64
+      - Development/Linux
+      - Development/Android/Android (ARMv7+ARM64+X86+X86_64,Generic,App,AAB,Single
+        Binary,Auto,Auto,Public)/IL2CPP
+      - Development/Android/Android (ARMv7+ARM64+X86+X86_64,Generic,App,AAB,Single
+        Binary,Auto,Auto,Public)
+      - Development/Android
+      - Development/PC/Windows x86 (App)/IL2CPP
+      - Development/PC/Windows x86 (App)
+      - Development/PC/Windows x64 (App)/IL2CPP
+      - Development/PC/Windows x64 (App)
+      - Development/PC
+      - Development/WebGL/WebGL/IL2CPP
+      - Development/WebGL/WebGL
+      - Development/WebGL
+      - Development
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      _Values:
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - Release/Linux/Linux x64/IL2CPP
+      - enabled: 1
+        childKeys:
+        - Release/Linux/Linux x64
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - Release/Android/Android (ARMv7+ARM64+X86+X86_64,Generic,App,AAB,Single
+          Binary,Auto,Auto,Public)/IL2CPP
+      - enabled: 1
+        childKeys:
+        - Release/Android/Android (ARMv7+ARM64+X86+X86_64,Generic,App,AAB,Single
+          Binary,Auto,Auto,Public)
+      - enabled: 0
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - Release/PC/Windows x86 (App)/IL2CPP
+      - enabled: 0
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - Release/PC/Windows x64 (App)/IL2CPP
+      - enabled: 1
+        childKeys:
+        - Release/PC/Windows x86 (App)
+        - Release/PC/Windows x64 (App)
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - Release/WebGL/WebGL/IL2CPP
+      - enabled: 1
+        childKeys:
+        - Release/WebGL/WebGL
+      - enabled: 1
+        childKeys:
+        - Release/Linux
+        - Release/Android
+        - Release/PC
+        - Release/WebGL
+      - enabled: 0
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - Development/Linux/Linux x64/IL2CPP
+      - enabled: 1
+        childKeys:
+        - Development/Linux/Linux x64
+      - enabled: 0
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - Development/Android/Android (ARMv7+ARM64+X86+X86_64,Generic,App,AAB,Single
+          Binary,Auto,Auto,Public)/IL2CPP
+      - enabled: 1
+        childKeys:
+        - Development/Android/Android (ARMv7+ARM64+X86+X86_64,Generic,App,AAB,Single
+          Binary,Auto,Auto,Public)
+      - enabled: 0
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - Development/PC/Windows x86 (App)/IL2CPP
+      - enabled: 0
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - Development/PC/Windows x64 (App)/IL2CPP
+      - enabled: 1
+        childKeys:
+        - Development/PC/Windows x86 (App)
+        - Development/PC/Windows x64 (App)
+      - enabled: 0
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - Development/WebGL/WebGL/IL2CPP
+      - enabled: 1
+        childKeys:
+        - Development/WebGL/WebGL
+      - enabled: 1
+        childKeys:
+        - Development/Linux
+        - Development/Android
+        - Development/PC
+        - Development/WebGL
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+    showViewOptions: 0
+    showConfigs: 0
+    showBuildInfo: 0
+    hideDisabled: 0
+    treeView: 0
+    selectedKeyChain: Development/Linux/Linux x64/IL2CPP
+  _preBuildActions:
+    buildActions: []
+  _postBuildActions:
+    buildActions: []
+--- !u!114 &104590507181996566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89df54eebccd0704dbbe96915fbb9a6f, type: 3}
+  m_Name: Android
+  m_EditorClassIdentifier: 
+  enabled: 1
+  distributionList:
+    distributions: []
+  architectures:
+  - target: 13
+    name: Android
+    enabled: 1
+    binaryNameFormat: '{0}.aab'
+  variants:
+  - variantName: Device Type
+    selectedIndex: -1
+    values:
+    - ARMv7
+    - ARM64
+    - X86
+    - X86_64
+    isFlag: 1
+  - variantName: Texture Compression
+    selectedIndex: 0
+    values:
+    - Generic
+    - DXT
+    - PVRTC
+    - ATC
+    - ETC
+    - ETC2
+    - ASTC
+    isFlag: 0
+  - variantName: Build Output
+    selectedIndex: 0
+    values:
+    - App
+    - Gradle Project
+    isFlag: 0
+  - variantName: Binary Type
+    selectedIndex: 2
+    values:
+    - APK
+    - Split APK
+    - AAB
+    isFlag: 0
+  - variantName: APK Expansion Type
+    selectedIndex: 0
+    values:
+    - Single Binary
+    - Split App Binary
+    isFlag: 0
+  - variantName: Min SDK Version
+    selectedIndex: 0
+    values:
+    - Auto
+    - 16
+    - 17
+    - 18
+    - 19
+    - 21
+    - 22
+    - 23
+    - 24
+    - 25
+    - 26
+    - 27
+    - 28
+    - 29
+    - 30
+    - 31
+    - 32
+    - 33
+    - 34
+    - 35
+    isFlag: 0
+  - variantName: Target SDK Version
+    selectedIndex: 0
+    values:
+    - Auto
+    - 16
+    - 17
+    - 18
+    - 19
+    - 21
+    - 22
+    - 23
+    - 24
+    - 25
+    - 26
+    - 27
+    - 28
+    - 29
+    - 30
+    - 31
+    - 32
+    - 33
+    - 34
+    - 35
+    isFlag: 0
+  - variantName: Create symbols.zip
+    selectedIndex: 1
+    values:
+    - Disabled
+    - Public
+    - Debugging
+    isFlag: 0
+  scriptingBackends:
+  - scriptingImplementation: 0
+    name: Mono
+    enabled: 0
+  - scriptingImplementation: 1
+    name: IL2CPP
+    enabled: 1
+  platformName: Android
+  targetGroup: 7
+--- !u!114 &8036103815543175476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dc439ce9d1bfb34a821f7d6fabc4fef, type: 3}
+  m_Name: Linux
+  m_EditorClassIdentifier: 
+  enabled: 1
+  distributionList:
+    distributions: []
+  architectures:
+  - target: 24
+    name: Linux x64
+    enabled: 1
+    binaryNameFormat: '{0}.x86_64'
+  variants: []
+  scriptingBackends:
+  - scriptingImplementation: 0
+    name: Mono
+    enabled: 0
+  - scriptingImplementation: 1
+    name: IL2CPP
+    enabled: 1
+  platformName: Linux
+  targetGroup: 1
