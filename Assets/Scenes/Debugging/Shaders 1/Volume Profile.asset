@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   PixelResolution:
-    m_OverrideState: 0
-    m_Value: 282
+    m_OverrideState: 1
+    m_Value: 162
 --- !u!114 &-6032048302135641483
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -62,8 +62,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   components:
   - {fileID: -4166882156059993454}
-  - {fileID: -8757937327130948703}
   - {fileID: 3390684549861758217}
+  - {fileID: -8757937327130948703}
 --- !u!114 &3390684549861758217
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -79,4 +79,4 @@ MonoBehaviour:
   active: 1
   Intensity:
     m_OverrideState: 1
-    m_Value: 118.23
+    m_Value: 66

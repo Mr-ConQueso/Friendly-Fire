@@ -6,7 +6,7 @@ using UnityEngine.Rendering.Universal;
 
 public class PosterizationBehaviours : VolumeComponent, IPostProcessComponent
 {
-    [SerializeField] public FloatParameter Intensity = new FloatParameter(128);
+    public IntParameter Intensity = new IntParameter(4);
 
 
     public bool IsActive() => Intensity.value > 0.1f;
