@@ -11,7 +11,7 @@ namespace SuperUnityBuild.BuildTool
         protected static T CreateAsset<T>(string assetName) where T : BaseSettings
         {
             // Try to load an existing settings asset at the path specified in EditorPrefs, or fallback to a default path
-            string assetsRoot = Path.Combine(Constants.AssetsDirectoryName, Constants.RootDirectoryName);
+            string assetsRoot = Constants.PluginDirectory();
             string settingsRoot = Path.Combine(assetsRoot, Constants.SettingsDirectoryName);
             string defaultAssetPath = Path.Combine(settingsRoot, string.Format("{0}.asset", assetName));
             string prefsAssetPath = EditorPrefs.HasKey(SettingsPrefsKey) ?
@@ -21,14 +21,14 @@ namespace SuperUnityBuild.BuildTool
 
             T instance = AssetDatabase.LoadAssetAtPath<T>(assetPath);
 
+            AssetDatabaseUtility.EnsureDefaultDirectoriesExist();
+
             if (instance == null)
             {
-                //Create the default settings file 
+                //Create the default settings file
                 Debug.Log($"SuperUnityBuild: Creating settings file: {defaultAssetPath}");
                 instance = CreateInstance<T>();
                 instance.name = assetName;
-
-                AssetDatabaseUtility.EnsureDefaultDirectoriesExist();
 
                 AssetDatabase.CreateAsset(instance, defaultAssetPath);
             }
