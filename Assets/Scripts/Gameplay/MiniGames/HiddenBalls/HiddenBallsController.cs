@@ -22,10 +22,10 @@ namespace Gameplay.MiniGames.HiddenBalls
         [SerializeField] public List<BallHider> BallHiders;
         
         // ---- / Serialized Variables / ---- //
-        [SerializeField] private int maxRounds = 5;
-        [SerializeField] private float rotationDuration = 0.75f;
-        [SerializeField] private float timeBetweenRounds = 0.5f;
-        [SerializeField] private GameObject ballPrefab;
+        [SerializeField] private int _maxRounds = 5;
+        [SerializeField] private float _rotationDuration = 0.75f;
+        [SerializeField] private float _timeBetweenRounds = 0.5f;
+        [SerializeField] private GameObject _ballPrefab;
 
         // ---- / Private Variables / ---- //
         private int _previousIndex1 = -1;
@@ -74,7 +74,7 @@ namespace Gameplay.MiniGames.HiddenBalls
             DevConsole.RegisterConsoleCommand(this, "moverandomglass");
             StartCoroutine(SwitchMultipleTimes());
             
-            _ball = Instantiate(ballPrefab, transform.position, transform.rotation);
+            _ball = Instantiate(_ballPrefab, transform.position, transform.rotation);
         }
 
         private void Update()
@@ -106,17 +106,17 @@ namespace Gameplay.MiniGames.HiddenBalls
             float angle = Random.value > 0.5f ? 180f : -180f;
 
             Vector3 middlePosition = (BallHiders[randomIndex].transform.position + BallHiders[randomIndex2].transform.position) / 2;
-            StartCoroutine(RotateAroundPivot(BallHiders[randomIndex].transform, BallHiders[randomIndex2].transform, middlePosition, angle, rotationDuration));
+            StartCoroutine(RotateAroundPivot(BallHiders[randomIndex].transform, BallHiders[randomIndex2].transform, middlePosition, angle, _rotationDuration));
         }
 
         private IEnumerator SwitchMultipleTimes()
         {
             OnToggleBallsInteraction?.Invoke(false);
 
-            for (int i = 0; i < maxRounds; i++)
+            for (int i = 0; i < _maxRounds; i++)
             {
                 MoveRandomBallHiders();
-                yield return new WaitForSeconds(rotationDuration + timeBetweenRounds);
+                yield return new WaitForSeconds(_rotationDuration + _timeBetweenRounds);
             }
             StartPlayerTurn();
         }

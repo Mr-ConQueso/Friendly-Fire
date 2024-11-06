@@ -14,16 +14,20 @@ public class SequenceController : MonoBehaviour
     
     public delegate void SetSequencedObjectInteractableEventHandler(bool willInteractable);
     public static event SetSequencedObjectInteractableEventHandler OnSetSequencedObjectInteractable;
+    
+    public delegate void SetSequencedObjectColorEventHandler(Color color);
+    public static event SetSequencedObjectColorEventHandler OnSetSequencedObjectColor;
         
     // ---- / Public Variables / ---- //
     [SerializeField] public List<SequencedObject> SequencedObjects;
     
     // ---- / Serialized Variables / ---- //
-    [SerializeField] private int maxRounds = 5;
-    [SerializeField] private float timeBetweenEvents = 0.5f;
+    [SerializeField] private int _maxRounds = 5;
+    [SerializeField] private float _timeBetweenEvents = 0.5f;
 
     private List<int> _currentSequence = new List<int>();
     private int _currentSelectedIndex = 0;
+    private int _lastSelectedIndex;
         
     private void Awake()
     {
@@ -35,12 +39,6 @@ public class SequenceController : MonoBehaviour
     
     private void Start()
     {
-        if (SequencedObjects.Count < maxRounds)
-        {
-            Debug.LogError("More rounds than objects, this will lead to repetition in the sequence");
-            return;
-        }
-        
         DevConsole.RegisterConsoleCommand(this, "restartsequence");
         
         StartNewGame();
@@ -57,16 +55,13 @@ public class SequenceController : MonoBehaviour
     
     private void RandomizeSequence()
     {
-        for (int i = 0; i < maxRounds; i++)
+        _currentSequence.Clear();
+        
+        for (int i = 0; i < _maxRounds; i++)
         {
-            int randomIndex = 0;
-            do
-            {
-                randomIndex = Random.Range(0, SequencedObjects.Count);
-
-            } while (_currentSequence.Contains(randomIndex));
-            
+            int randomIndex = Random.Range(0, SequencedObjects.Count);
             _currentSequence.Add(randomIndex);
+            
             SequencedObjects[randomIndex].ObjectIndex = randomIndex;
         }
     }
@@ -75,6 +70,7 @@ public class SequenceController : MonoBehaviour
     {
         if (objectIndex == _currentSequence[_currentSelectedIndex])
         {
+            _lastSelectedIndex = _currentSelectedIndex;
             _currentSelectedIndex++;
             if (_currentSelectedIndex >= _currentSequence.Count)
             {
@@ -104,9 +100,10 @@ public class SequenceController : MonoBehaviour
         foreach (int index in _currentSequence)
         {
             SequencedObject obj = SequencedObjects[index];
-            obj.ActivateColor();
-            yield return new WaitForSeconds(timeBetweenEvents);
-            obj.DeactivateColor();
+            obj.ActivateButton();
+            yield return new WaitForSeconds(_timeBetweenEvents);
+            obj.DeactivateButton();
+            yield return new WaitForSeconds(_timeBetweenEvents);
         }
         OnSetSequencedObjectInteractable?.Invoke(true);
     }
@@ -114,10 +111,16 @@ public class SequenceController : MonoBehaviour
     private void Win()
     {
         Debug.Log("You won!");
-        StartNewGame();
+        Invoke(nameof(RestartGame), _timeBetweenEvents);
     }
 
     private void Error()
+    {
+        OnSetSequencedObjectColor?.Invoke(Color.black);
+        Invoke(nameof(RestartGame), _timeBetweenEvents);
+    }
+    
+    private void RestartGame()
     {
         StartNewGame();
     }

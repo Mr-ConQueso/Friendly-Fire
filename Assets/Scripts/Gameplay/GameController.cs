@@ -11,6 +11,9 @@ public class GameController : MonoBehaviour
     public delegate void GameStartEventHandler();
     public static event GameStartEventHandler OnGameStart;
     
+    public delegate void StartMiniGameEventHandler();
+    public static event StartMiniGameEventHandler OnStartMiniGame;
+    
     public delegate void GameEndEventHandler();
     public static event GameEndEventHandler OnGameEnd;
     
@@ -45,10 +48,12 @@ public class GameController : MonoBehaviour
     [HideInInspector] public int CurrentRound { get; private set; }
     
     // ---- / Serialized Variables / ---- //
-    [SerializeField] private int maxRounds = 5;
+    [SerializeField] private int _maxRounds = 5;
+    [SerializeField] private int _shotsPerMiniGame = 3;
 
     // ---- / Private Variables / ---- //
     private bool _isGameEnded;
+    private int _currentShotsInRound;
 
     public void InvokeOnGameResumed()
     {
@@ -69,12 +74,21 @@ public class GameController : MonoBehaviour
 
     public void ChangeTurn()
     {
-        if (CurrentRound + 1 > maxRounds)
+        if (CurrentRound + 1 > _maxRounds)
         {
            EndGame();
            return;
         }
-        
+
+        if (_currentShotsInRound < _shotsPerMiniGame)
+        {
+            _currentShotsInRound++;
+        }
+        else
+        {
+            OnStartMiniGame?.Invoke();
+        }
+
         CurrentRound++;
         switch (CurrentTurn)
         {

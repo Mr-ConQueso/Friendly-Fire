@@ -13,6 +13,8 @@ public class InputManager : MonoBehaviour
     
     public static bool WasEscapePressed;
     
+    public static bool WasShootPressed;
+    
     // ---- / Private Variables / ---- //
     private static PlayerInput _playerInput;
     
@@ -21,6 +23,8 @@ public class InputManager : MonoBehaviour
     private InputAction _devConsoleAction;
     
     private InputAction _escapeAction;
+    
+    private InputAction _shootAction;
 
     private void Awake()
     {
@@ -36,6 +40,8 @@ public class InputManager : MonoBehaviour
         _devConsoleAction = _playerInput.actions["ToggleDevConsole"];
         
         _escapeAction = _playerInput.actions["Escape"];
+        
+        _shootAction = _playerInput.actions["Shoot"];
     }
 
     private void Update()
@@ -45,5 +51,7 @@ public class InputManager : MonoBehaviour
         WasToggleDevConsolePressed = _devConsoleAction.WasPerformedThisFrame();
 
         WasEscapePressed = _escapeAction.WasPressedThisFrame();
+        
+        WasShootPressed = _shootAction.WasPerformedThisFrame();
     }
 }

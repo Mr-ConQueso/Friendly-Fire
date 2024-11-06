@@ -12,47 +12,69 @@ namespace Gameplay.MiniGames.HiddenBalls
         private bool _isInteractable = true;
         private bool _isActive = false;
         private MeshRenderer _meshRenderer;
+        private Light _light;
+        private Material _unActiveMaterial, _activeMaterial;
+        private int _buttonMaterialIndex;
+        
+        public void DisableInteractable()
+        {
+            _isInteractable = false;
+        }
 
         private void Awake()
         {
             _meshRenderer = GetComponentInChildren<MeshRenderer>();
+            _light = GetComponentInChildren<Light>();
             SequenceController.OnResetSequencedObjects += OnResetSequencedObjects;
             SequenceController.OnSetSequencedObjectInteractable += OnSetSequencedObjectInteractable;
+            SequenceController.OnSetSequencedObjectColor += SetActiveColor;
+        }
+
+        private void Start()
+        {
+            _buttonMaterialIndex = GetButtonMaterialIndex();
+            _unActiveMaterial = _meshRenderer.materials[_buttonMaterialIndex];
+            _activeMaterial = GetActiveColor(_unActiveMaterial);
+            _light.color = _activeMaterial.color;
         }
 
         private void OnDestroy()
         {
             SequenceController.OnResetSequencedObjects -= OnResetSequencedObjects;
             SequenceController.OnSetSequencedObjectInteractable -= OnSetSequencedObjectInteractable;
+            SequenceController.OnSetSequencedObjectColor -= SetActiveColor;
         }
 
         private void OnMouseDown()
         {
             if (_isInteractable) 
             {
-                _isActive = !_isActive;
                 if (_isActive)
                 {
-                    ActivateColor();
-                    SequenceController.Instance.ClickSequencedObject(ObjectIndex);
+                    DeactivateButton();
+                    SequenceController.Instance.ClearSequence();
                 }
                 else
                 {
-                    DeactivateColor();
-                    SequenceController.Instance.ClearSequence();
+                    ActivateButton();
+                    SequenceController.Instance.ClickSequencedObject(ObjectIndex);
+                    Invoke(nameof(DeactivateButton), 0.5f);
                 }
-                DisableInteractable();
             }
         }
 
-        public void DeactivateColor()
+        public void DeactivateButton()
         {
-            _meshRenderer.material.color = Color.white;
+            SetMeshMaterial(_unActiveMaterial);
+            _light.enabled = false;
+            _isActive = false;
         }
 
-        public void ActivateColor()
+        public void ActivateButton()
         {
-            _meshRenderer.material.color = Color.red;
+            SetMeshMaterial(_activeMaterial);
+            _light.enabled = true;
+            _isActive = true;
         }
 
         public void OnMouseEnter()
@@ -80,13 +102,11 @@ namespace Gameplay.MiniGames.HiddenBalls
         {
             if (willActivate)
             {
-                _isActive = true;
-                ActivateColor();
+                ActivateButton();
             }
             else
             {
-                _isActive = false;
-                DeactivateColor();
+                DeactivateButton();
             }
         }
         
@@ -102,9 +122,51 @@ namespace Gameplay.MiniGames.HiddenBalls
             }
         }
         
-        public void DisableInteractable()
+        private void SetActiveColor(Color color)
         {
-            _isInteractable = false;
+            Material blackMat = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
+            blackMat.name = "Black";
+            blackMat.color = color;
+            SetMeshMaterial(blackMat);
+            _light.enabled = false;
+        }
+        
+        private void SetMeshMaterial(Material material)
+        {
+            Material[] materials = _meshRenderer.materials;
+            materials[_buttonMaterialIndex] = material;
+            _meshRenderer.materials = materials;
+        }
+        
+        private int GetButtonMaterialIndex()
+        {
+            Material[] materials = _meshRenderer.materials;
+            for (int i = 0; i < materials.Length; i++)
+            {
+                if (materials[i].name.Contains("Button"))
+                {
+                    return i;
+                }
+            }
+            Debug.LogError("No button material found");
+            return -1;
+        }
+
+        private Material GetActiveColor(Material materialToCopy)
+        {
+            Color unactiveColor = materialToCopy.color;
+            Color.RGBToHSV(unactiveColor, out float H, out float S, out float V);
+            V = 1f;
+            Color newColor = Color.HSVToRGB(H, S, V);
+
+            Material material = new Material(materialToCopy);
+            material.name = "ActiveColor";
+            material.color = newColor;
+            material.SetColor("_EmissionColor", newColor);
+            material.EnableKeyword("_EMISSION");
+            
+            material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
+            return material;
         }
     }
 }

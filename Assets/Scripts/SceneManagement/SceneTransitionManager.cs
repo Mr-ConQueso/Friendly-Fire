@@ -32,6 +32,11 @@ namespace BaseGame
             _transitionAnimator = GetComponent<Animator>();
         }
 
+        private void Start()
+        {
+            EndAnimation();
+        }
+
         public void EndLoadIn()
         {
             IsFadingIn = false;
