@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public class PosterizationBehaviours : VolumeComponent, IPostProcessComponent
+public class DitheringBehaviours : VolumeComponent, IPostProcessComponent
 {
     public IntParameter Intensity = new IntParameter(0);
 

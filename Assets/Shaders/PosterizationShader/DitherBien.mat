@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Custom_PosterizationShader
-  m_Shader: {fileID: 4800000, guid: 1ee8805769e0a6940a9eb4ab115aa9e8, type: 3}
+  m_Name: DitherBien
+  m_Shader: {fileID: 4800000, guid: 321685a5384fa1d43b72db30676873d8, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -29,9 +29,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Blue: 8
-    - _Green: 110.7
     - _Levels: 7
-    - _Red: 5.48
     m_Colors: []
   m_BuildTextureStacks: []

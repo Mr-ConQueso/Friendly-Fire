@@ -3,23 +3,23 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public class PosterizationPass : ScriptableRenderPass
+public class DitheringPass : ScriptableRenderPass
 {
     public Material posterMaterial;
-    private PosterizationBehaviours settings1;
+    private DitheringBehaviours settings1;
     private RenderTargetIdentifier source;
 
     private readonly int temporaryRTIdA = Shader.PropertyToID("_TempRT");
 
-    public PosterizationPass(Material posMaterial)
+    public DitheringPass(Material posMaterial)
     {
         posterMaterial = posMaterial;
         renderPassEvent = RenderPassEvent.AfterRenderingPostProcessing;
     }
 
-    public bool Setup(PosterizationBehaviours settings)
+    public bool Setup(DitheringBehaviours settings)
     {
-        settings1 = VolumeManager.instance.stack.GetComponent<PosterizationBehaviours>();
+        settings1 = VolumeManager.instance.stack.GetComponent<DitheringBehaviours>();
         if (settings1 != null && settings1.IsActive())
         {
             return true;

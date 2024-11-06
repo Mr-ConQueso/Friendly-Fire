@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   PixelResolution:
-    m_OverrideState: 1
-    m_Value: 162
+    m_OverrideState: 0
+    m_Value: 601
 --- !u!114 &-6032048302135641483
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -48,6 +48,22 @@ MonoBehaviour:
   blurMode:
     m_OverrideState: 1
     m_Value: 0
+--- !u!114 &-973657487353069133
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de499e1afb6eacc4d8ebe1afcaae6446, type: 3}
+  m_Name: DitheringBehaviours
+  m_EditorClassIdentifier: 
+  active: 1
+  Intensity:
+    m_OverrideState: 1
+    m_Value: 7
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,6 +80,7 @@ MonoBehaviour:
   - {fileID: -4166882156059993454}
   - {fileID: 3390684549861758217}
   - {fileID: -8757937327130948703}
+  - {fileID: -973657487353069133}
 --- !u!114 &3390684549861758217
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -79,4 +96,4 @@ MonoBehaviour:
   active: 1
   Intensity:
     m_OverrideState: 1
-    m_Value: 66
+    m_Value: 7

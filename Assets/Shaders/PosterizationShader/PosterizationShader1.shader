@@ -21,6 +21,7 @@ Shader "Custom/URPPosterizationShader"
             // Declare texture and sampler
             sampler2D _MainTex;
             float _Levels;
+            
 
             struct appdata
             {
@@ -45,13 +46,30 @@ Shader "Custom/URPPosterizationShader"
                 o.uv = v.uv;
                 return o;
             }
+                static const float bayerMatrix[16] ={
+                    0.0, 8.0, 2.0, 10.0,
+                    12.0, 4.0, 14.0, 6.0,
+                    3.0, 11.0, 1.0, 9.0,
+                    15.0, 7.0, 13.0, 5.0
+                };
 
             float4 frag (v2f i) : COLOR
             {
+
                 // Sample the texture normally to check if it's working
                 float3 color = tex2D(_MainTex, i.uv);
-                float3 colorOut = posterize(color, _Levels);    
-                return float4(colorOut, 1.0);
+                
+                int x = int(i.uv.x * 1025) & 3;
+                int y = int(i.uv.y *  512) & 3;
+                int index = y * 4 + x;
+                
+                // Get threshold from the Bayer matrix and normalize it
+                float threshold = bayerMatrix[index] / (16.0)-0.5;
+
+                // Compare grayscale value with the threshold to create dithering effect
+                float3 outputColor = round(color*4.0+ threshold)/4.0; //>0.5  ? 1.0 : 0.0;
+                
+                return float4(outputColor, 1.0);
             }
             ENDCG
         }
