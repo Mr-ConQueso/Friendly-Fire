@@ -76,7 +76,7 @@ MonoBehaviour:
   m_Name: Blur
   m_EditorClassIdentifier: 
   m_Active: 1
-  blurShader: {fileID: 4800000, guid: 7e395fb51cae22d9e8e6f392717f1c2c, type: 3}
+  _blurShader: {fileID: 0}
 --- !u!114 &-1198453557091676485
 MonoBehaviour:
   m_ObjectHideFlags: 0
