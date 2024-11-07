@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Name: DitheringBehaviours
   m_EditorClassIdentifier: 
   active: 1
-  Intensity:
+  Value:
     m_OverrideState: 1
     m_Value: 7
 --- !u!114 &11400000
@@ -237,9 +237,15 @@ MonoBehaviour:
   m_Name: PosterizationBehaviours
   m_EditorClassIdentifier: 
   active: 1
-  Intensity:
-    m_OverrideState: 1
+  color:
+    m_OverrideState: 0
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
+  saturation:
+    m_OverrideState: 0
     m_Value: 0
+  Value:
+    m_OverrideState: 1
+    m_Value: 14
 --- !u!114 &7858769687358475883
 MonoBehaviour:
   m_ObjectHideFlags: 3
