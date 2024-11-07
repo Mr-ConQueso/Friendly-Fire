@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,32 +32,11 @@ namespace Gameplay.MiniGames.HiddenBalls
         private bool _canBallMove = true;
         private GameObject _ball;
         
-        public void CheckCorrectAnswer()
+        public void CheckCorrectAnswer(BallHider hider)
         {
             if (BallHiders.Count == 0) return;
-            
-            // ToDo: Check if the balls are in the correct order
-            int correctIndex = BallHiders.FindIndex(ballHider => ballHider.transform.position == BallHiders[0].transform.position);
-            if (correctIndex != 0)
-            {
-                Invoke(nameof(WinGame), 1.0f);
-            }
-            else
-            {
-                Invoke(nameof(RestartGame), 1.0f);
-            }
-        }
 
-        private void RestartGame()
-        {
-            Debug.Log("You lose");
-            StartCoroutine(SwitchMultipleTimes());
-        }
-
-        private void WinGame()
-        {
-            Debug.Log("You win");
-            //StartCoroutine(SwitchMultipleTimes());
+            Invoke(BallHiders[0] == hider ? nameof(WinGame) : nameof(RestartGame), 1.0f);
         }
 
         private void Awake()
@@ -84,13 +62,26 @@ namespace Gameplay.MiniGames.HiddenBalls
                 _ball.transform.position = BallHiders[0].transform.position;
             }
         }
+        
+        private void RestartGame()
+        {
+            Debug.Log("You lose");
+            //StartCoroutine(SwitchMultipleTimes());
+            OnToggleBallsInteraction?.Invoke(false);
+        }
+
+        private void WinGame()
+        {
+            Debug.Log("You win");
+            OnToggleBallsInteraction?.Invoke(false);
+        }
 
         private void MoveRandomBallHiders()
         {
             _canBallMove = true;
 
-            int randomIndex = 0;
-            int randomIndex2 = 0;
+            int randomIndex;
+            int randomIndex2;
             do
             {
                 randomIndex = Random.Range(0, BallHiders.Count);
@@ -128,26 +119,30 @@ namespace Gameplay.MiniGames.HiddenBalls
             _canBallMove = false;
         }
 
-        private IEnumerator RotateAroundPivot(Transform obj1, Transform obj2, Vector3 pivot, float angle, float duration)
+        private static IEnumerator RotateAroundPivot(Transform obj1, Transform obj2, Vector3 pivot, float angle, float duration)
         {
             float elapsedTime = 0f;
-            Quaternion startRotation1 = obj1.rotation;
-            Quaternion startRotation2 = obj2.rotation;
+            float totalRotation = 0f;
 
             while (elapsedTime < duration)
             {
                 float step = (angle / duration) * Time.deltaTime;
+
                 obj1.RotateAround(pivot, Vector3.up, step);
                 obj2.RotateAround(pivot, Vector3.up, step);
+
+                totalRotation += step;
 
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }
 
-            obj1.RotateAround(pivot, Vector3.up, angle - elapsedTime * (angle / duration));
-            obj2.RotateAround(pivot, Vector3.up, angle - elapsedTime * (angle / duration));
+            float correction = angle - totalRotation;
+            obj1.RotateAround(pivot, Vector3.up, correction);
+            obj2.RotateAround(pivot, Vector3.up, correction);
         }
         
+        // ---- / Console Commands / ---- //
         private void OnConsoleCommand_moverandomglass(NotificationCenter.Notification n)
         {
             MoveRandomBallHiders();

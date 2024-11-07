@@ -56,7 +56,7 @@ public class BlurRenderPass : ScriptableRenderPass
         CommandBuffer cmd = CommandBufferPool.Get("Blur Post Process");
 
         // Set Blur effect properties.
-        int gridSize = Mathf.CeilToInt(_blurSettings.strength.value * 3.0f);
+        int gridSize = Mathf.CeilToInt(_blurSettings.Strength.value * 3.0f);
 
         if(gridSize % 2 == 0)
         {
@@ -64,10 +64,10 @@ public class BlurRenderPass : ScriptableRenderPass
         }
 
         _material.SetInteger(GridSize, gridSize);
-        _material.SetFloat(Spread, _blurSettings.strength.value);
+        _material.SetFloat(Spread, _blurSettings.Strength.value);
         
         // Set "boolean" variable on shader based on the volume's property
-        switch (_blurSettings.blurMode.value)
+        switch (_blurSettings.BlurMode.value)
         {
             case BlurMode.GaussianBlur:
                 _material.SetFloat(BlurModeProperty, 0);

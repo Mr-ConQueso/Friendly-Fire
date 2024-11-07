@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using BaseGame;
@@ -12,8 +11,8 @@ public class MenuSelector : MonoBehaviour
     public static MenuSelector Instance;
     
     // ---- / Public Variables / ---- //
-    public GameObject LastSelected { get; set; }
-    public int LastSelectedIndex { get; set; }
+    public GameObject lastSelected { get; set; }
+    public int lastSelectedIndex { get; set; }
     public List<GameObject> SelectableItems = new List<GameObject>();
 
     private void Awake()
@@ -49,11 +48,11 @@ public class MenuSelector : MonoBehaviour
     
     private void Update()
     {
-        if (InputManager.Instance.NavigationInput.x > 0)
+        if (InputManager.Instance.navigationInput.x > 0)
         {
             HandleNextButtonSelection(1);
         }
-        if (InputManager.Instance.NavigationInput.x < 0)
+        if (InputManager.Instance.navigationInput.x < 0)
         {
             HandleNextButtonSelection(-1);
         }
@@ -61,9 +60,9 @@ public class MenuSelector : MonoBehaviour
 
     private void HandleNextButtonSelection(int addition)
     {
-        if (EventSystem.current.currentSelectedGameObject == null && LastSelected != null)
+        if (EventSystem.current.currentSelectedGameObject == null && lastSelected != null)
         {
-            int newIndex = LastSelectedIndex + addition;
+            int newIndex = lastSelectedIndex + addition;
             newIndex = Mathf.Clamp(newIndex, 0, SelectableItems.Count - 1);
             EventSystem.current.SetSelectedGameObject(SelectableItems[newIndex]);
         }

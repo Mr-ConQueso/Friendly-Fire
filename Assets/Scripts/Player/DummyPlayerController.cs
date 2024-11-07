@@ -3,7 +3,7 @@ using UnityEngine;
 public class DummyPlayerController : MonoBehaviour
 {
     // ---- / Serialized Variables / ---- //
-    [SerializeField] private PlayerType playerType;
+    [SerializeField] private PlayerType _playerType;
     
     private void Awake()
     {
@@ -19,7 +19,7 @@ public class DummyPlayerController : MonoBehaviour
 
     private void OnStartTurn1()
     {
-        switch (playerType)
+        switch (_playerType)
         {
             case PlayerType.Player1:
                 gameObject.SetActive(true);
@@ -32,7 +32,7 @@ public class DummyPlayerController : MonoBehaviour
     
     private void OnStartTurn2()
     {
-        switch (playerType)
+        switch (_playerType)
         {
             case PlayerType.Player1:
                 gameObject.SetActive(false);

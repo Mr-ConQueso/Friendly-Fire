@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace BaseGame
@@ -9,8 +8,8 @@ namespace BaseGame
         public static SceneTransitionManager Instance;
         
         // ---- / Public Variables / ---- //
-        public bool IsFadingIn { get; private set; }
-        public bool IsFadingOut { get; private set; }
+        public bool isFadingIn { get; private set; }
+        public bool isFadingOut { get; private set; }
         
         // ---- / Private Variables / ---- //
         private Animator _transitionAnimator;
@@ -39,25 +38,25 @@ namespace BaseGame
 
         public void EndLoadIn()
         {
-            IsFadingIn = false;
+            isFadingIn = false;
             EndAnimation();
         }
         
         public void EndLoadOut()
         {
-            IsFadingOut = false;
+            isFadingOut = false;
         }
 
         public void StartAnimation()
         {
             _transitionAnimator.SetTrigger("triggerStart");
-            IsFadingIn = true;
+            isFadingIn = true;
         }
 
-        public void EndAnimation()
+        private void EndAnimation()
         {
             _transitionAnimator.SetTrigger("triggerEnd");
-            IsFadingOut = true;
+            isFadingOut = true;
         }
     }
 }

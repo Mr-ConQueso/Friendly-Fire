@@ -31,7 +31,7 @@ public class TurnCard : HoverableObject
 
     private void OnMouseDown()
     {
-        if (IsInteractable)
+        if (isInteractable)
         {
             if (!_isTurnedUp)
             {
@@ -53,7 +53,7 @@ public class TurnCard : HoverableObject
             CardPairsController.Instance.CompletedCards.Add(gameObject);
             DisableInteractable();
         }
-        else if (IsInteractable)
+        else if (isInteractable)
         {
             if (willTurnUp && !_isTurnedUp)
             {
@@ -70,7 +70,7 @@ public class TurnCard : HoverableObject
     {
         if (isinteractable && !CardPairsController.Instance.CompletedCards.Contains(gameObject))
         {
-            IsInteractable = true;
+            EnableInteractable();
         }
         else
         {
@@ -80,7 +80,7 @@ public class TurnCard : HoverableObject
     
     private void OnResetAllCards()
     {
-        IsInteractable = true;
+        EnableInteractable();
         TurnCardDown();
     }
     

@@ -2,10 +2,10 @@ using System.Collections.Generic;
 
 public sealed class ListPool<T> : Pool<ListPool<T>>
 {
-    public readonly List<T> list = new List<T>();
+    public readonly List<T> List = new List<T>();
 
     protected override void Deinitialize()
     {	
-        list.Clear();
+        List.Clear();
     }
 }

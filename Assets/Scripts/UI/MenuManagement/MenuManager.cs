@@ -31,6 +31,8 @@ public class MenuManager : MonoBehaviour
             case Menu.LevelChooserMenu:
                 LevelChooserMenu.SetActive(true);
                 break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(menu), menu, null);
         }
         
         callingMenu.SetActive(false);

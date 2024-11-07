@@ -15,19 +15,18 @@ public class SequenceController : MonoBehaviour
     public delegate void SetSequencedObjectInteractableEventHandler(bool willInteractable);
     public static event SetSequencedObjectInteractableEventHandler OnSetSequencedObjectInteractable;
     
-    public delegate void SetSequencedObjectColorEventHandler(Color color);
+    public delegate void SetSequencedObjectColorEventHandler(Color targetColor, bool fadeIn);
     public static event SetSequencedObjectColorEventHandler OnSetSequencedObjectColor;
         
     // ---- / Public Variables / ---- //
     [SerializeField] public List<SequencedObject> SequencedObjects;
+    [SerializeField] public float TimeBetweenEvents = 0.5f;
     
     // ---- / Serialized Variables / ---- //
     [SerializeField] private int _maxRounds = 5;
-    [SerializeField] private float _timeBetweenEvents = 0.5f;
 
     private List<int> _currentSequence = new List<int>();
-    private int _currentSelectedIndex = 0;
-    private int _lastSelectedIndex;
+    private int _currentSelectedIndex;
         
     private void Awake()
     {
@@ -41,7 +40,8 @@ public class SequenceController : MonoBehaviour
     {
         DevConsole.RegisterConsoleCommand(this, "restartsequence");
         
-        StartNewGame();
+        OnSetSequencedObjectColor?.Invoke(Color.black, true);
+        Invoke(nameof(StartNewGame), TimeBetweenEvents);
     }
 
     private void StartNewGame()
@@ -70,7 +70,6 @@ public class SequenceController : MonoBehaviour
     {
         if (objectIndex == _currentSequence[_currentSelectedIndex])
         {
-            _lastSelectedIndex = _currentSelectedIndex;
             _currentSelectedIndex++;
             if (_currentSelectedIndex >= _currentSequence.Count)
             {
@@ -81,12 +80,6 @@ public class SequenceController : MonoBehaviour
         {
             Error();
         }
-    }
-    
-    public void ClearSequence()
-    {
-        _currentSequence.Clear();
-        _currentSelectedIndex = 0;
     }
 
     private void CombinationStart()
@@ -101,9 +94,9 @@ public class SequenceController : MonoBehaviour
         {
             SequencedObject obj = SequencedObjects[index];
             obj.ActivateButton();
-            yield return new WaitForSeconds(_timeBetweenEvents);
+            yield return new WaitForSeconds(TimeBetweenEvents);
             obj.DeactivateButton();
-            yield return new WaitForSeconds(_timeBetweenEvents);
+            yield return new WaitForSeconds(TimeBetweenEvents);
         }
         OnSetSequencedObjectInteractable?.Invoke(true);
     }
@@ -111,13 +104,21 @@ public class SequenceController : MonoBehaviour
     private void Win()
     {
         Debug.Log("You won!");
-        Invoke(nameof(RestartGame), _timeBetweenEvents);
+        _maxRounds++;
+        Invoke(nameof(RestartGame), TimeBetweenEvents);
     }
 
     private void Error()
     {
-        OnSetSequencedObjectColor?.Invoke(Color.black);
-        Invoke(nameof(RestartGame), _timeBetweenEvents);
+        OnSetSequencedObjectColor?.Invoke(Color.black, false);
+        Invoke(nameof(EndGame), TimeBetweenEvents);
+    }
+
+    private void EndGame()
+    {
+        OnSetSequencedObjectInteractable?.Invoke(false);
+        _currentSequence.Clear();
+        _currentSelectedIndex = 0;
     }
     
     private void RestartGame()
@@ -125,6 +126,7 @@ public class SequenceController : MonoBehaviour
         StartNewGame();
     }
     
+    // ---- / Console Commands / ---- //
     private void OnConsoleCommand_restartsequence(NotificationCenter.Notification n)
     {
         StartNewGame();

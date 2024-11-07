@@ -3,14 +3,14 @@ using UnityEngine;
 public class MusicController : MonoBehaviour
 {
     // ---- / Serialized Variables / ---- //
-    [SerializeField] private SoundData musicData;
+    [SerializeField] private SoundData _musicData;
     
     private void Start()
     {
         AudioController.Instance.CreateSound()
-            .WithSoundData(musicData)
+            .WithSoundData(_musicData)
             .WithRandomPitch(false)
-            .WithPosition(this.transform.position)
+            .WithPosition(transform.position)
             .Play();
     }
 }

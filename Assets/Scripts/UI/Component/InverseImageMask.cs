@@ -5,24 +5,23 @@ using UnityEngine.UI;
 public class InverseImageMask : Image
 {
     private static readonly int StencilComp = Shader.PropertyToID("_StencilComp");
-    private Material maskMaterial;
+    private Material _maskMaterial;
     
     public override Material materialForRendering
     {
         get
         {
-            if (maskMaterial == null)
-            {
-                maskMaterial = new Material(base.materialForRendering);
-                maskMaterial.SetInt(StencilComp, (int)CompareFunction.NotEqual);
-            }
-            return maskMaterial;
+            if (_maskMaterial != null) return _maskMaterial;
+            
+            _maskMaterial = new Material(base.materialForRendering);
+            _maskMaterial.SetInt(StencilComp, (int)CompareFunction.NotEqual);
+            return _maskMaterial;
         }
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
-        maskMaterial = null;
+        _maskMaterial = null;
     }
 }

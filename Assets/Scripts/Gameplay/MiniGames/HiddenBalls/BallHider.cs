@@ -20,7 +20,7 @@ namespace Gameplay.MiniGames.HiddenBalls
         {
             if (willInteract)
             {
-                IsInteractable = true;
+                EnableInteractable();
             }
             else
             {
@@ -28,12 +28,6 @@ namespace Gameplay.MiniGames.HiddenBalls
             }
         }
         
-        public override void OnMouseEnter() { return; }
-
-        public override void OnMouseOver() { return; }
-
-        public override void OnMouseExit() { return; }
-
         private void OnSetTransform()
         {
             StartPosition = transform.position;
@@ -42,10 +36,10 @@ namespace Gameplay.MiniGames.HiddenBalls
 
         private void OnMouseDown()
         {
-            if (!IsInteractable) return;
+            if (!isInteractable) return;
             
-            StartCoroutine(LerpTo(StartPosition + endPosition, StartScale * endScale));
-            HiddenBallsController.Instance.CheckCorrectAnswer();
+            StartCoroutine(LerpTo(StartPosition + EndPosition, StartScale * EndScale));
+            HiddenBallsController.Instance.CheckCorrectAnswer(this);
         }
     }
 }

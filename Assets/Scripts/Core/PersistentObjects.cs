@@ -5,13 +5,13 @@ namespace BaseGame
     public class PersistentObjects : MonoBehaviour
     {
         // ---- / Singleton / ---- //
-        public static PersistentObjects Instance;
+        private static PersistentObjects _instance;
         
         private void Awake()
         {
-            if (Instance == null)
+            if (_instance == null)
             {
-                Instance = this;
+                _instance = this;
                 DontDestroyOnLoad(gameObject);
             }
             else

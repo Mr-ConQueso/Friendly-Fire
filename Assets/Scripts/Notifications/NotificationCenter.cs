@@ -6,25 +6,25 @@ public class NotificationCenter : MonoBehaviour
 {
 	public class Notification
 	{
-		public readonly Component Sender;
-		public string Name;
-		public Hashtable Data;
+		private readonly Component _sender;
+		public readonly string Name;
+		public readonly Hashtable Data;
 
-		public C GetSenderComponent<C>() where C : Component
+		public TC GetSenderComponent<TC>() where TC : Component
 		{
-			return Sender.gameObject.GetComponent<C>();
+			return _sender.gameObject.GetComponent<TC>();
 		}
 
 		public Notification(Component aSender, string aName)
 		{
-			Sender = aSender;
+			_sender = aSender;
 			Name = aName;
 			Data = null;
 		}
 
 		public Notification(Component aSender, string aName, Hashtable aData)
 		{
-			Sender = aSender;
+			_sender = aSender;
 			Name = aName;
 			Data = aData;
 		}

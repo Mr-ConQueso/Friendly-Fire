@@ -5,8 +5,8 @@ using UnityEngine.Rendering;
 public class BlinkTransition : MonoBehaviour
 {
     // ---- / Serialized Variables / ---- //
-    [SerializeField] private float blinkDuration = 0.5f;
-    [SerializeField] private Volume volume;
+    [SerializeField] private float _blinkDuration = 0.5f;
+    [SerializeField] private Volume _volume;
     
     // ---- / Private Variables / ---- //
     private BlurSettings _blurSettings;
@@ -31,7 +31,7 @@ public class BlinkTransition : MonoBehaviour
     private void Start()
     {
         _animator = GetComponent<Animator>();
-        if (!volume.profile.TryGet<BlurSettings>(out _blurSettings))
+        if (!_volume.profile.TryGet<BlurSettings>(out _blurSettings))
         {
             Debug.LogError("Missing blur settings");
         }
@@ -39,7 +39,7 @@ public class BlinkTransition : MonoBehaviour
 
     private void OnChangeTurn()
     {
-        StartCoroutine(Blink(blinkDuration));
+        StartCoroutine(Blink(_blinkDuration));
     }
 
     private void StartBlinking()
@@ -66,7 +66,7 @@ public class BlinkTransition : MonoBehaviour
         
         yield return new WaitForSeconds(duration);
         
-        switch (GameController.Instance.CurrentTurn)
+        switch (GameController.Instance.currentTurn)
         {
             case PlayerType.Player1:
             {
@@ -91,11 +91,11 @@ public class BlinkTransition : MonoBehaviour
         while (elapsedTime < duration)
         {
             float t = elapsedTime / duration;
-            _blurSettings.strength.value = Mathf.Lerp(startValue, endValue, t);
+            _blurSettings.Strength.value = Mathf.Lerp(startValue, endValue, t);
 
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        _blurSettings.strength.value = endValue;
+        _blurSettings.Strength.value = endValue;
     }
 }

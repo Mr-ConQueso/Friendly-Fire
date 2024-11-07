@@ -1,3 +1,4 @@
+using System.Collections;
 using Gameplay.Helper;
 using UnityEngine;
 
@@ -8,17 +9,29 @@ namespace Gameplay.MiniGames.HiddenBalls
         // ---- / Public Variables / ---- //
         [HideInInspector] public int ObjectIndex;
         
+        // ---- / Serialized Variables / ---- //
+        [SerializeField] private SoundData _clickSound; 
+        
         // ---- / Private Variables / ---- //
         private bool _isInteractable = true;
-        private bool _isActive = false;
+        private bool _isActive;
         private MeshRenderer _meshRenderer;
         private Light _light;
         private Material _unActiveMaterial, _activeMaterial;
         private int _buttonMaterialIndex;
         
-        public void DisableInteractable()
+        public void DeactivateButton()
         {
-            _isInteractable = false;
+            SetMeshMaterial(_unActiveMaterial);
+            _light.enabled = false;
+            _isActive = false;
+        }
+
+        public void ActivateButton()
+        {
+            SetMeshMaterial(_activeMaterial);
+            _light.enabled = true;
+            _isActive = true;
         }
 
         private void Awake()
@@ -44,59 +57,32 @@ namespace Gameplay.MiniGames.HiddenBalls
             SequenceController.OnSetSequencedObjectInteractable -= OnSetSequencedObjectInteractable;
             SequenceController.OnSetSequencedObjectColor -= SetActiveColor;
         }
+        
+        private void DisableInteractable()
+        {
+            _isInteractable = false;
+        }
 
         private void OnMouseDown()
         {
-            if (_isInteractable) 
-            {
-                if (_isActive)
-                {
-                    DeactivateButton();
-                    SequenceController.Instance.ClearSequence();
-                }
-                else
-                {
-                    ActivateButton();
-                    SequenceController.Instance.ClickSequencedObject(ObjectIndex);
-                    Invoke(nameof(DeactivateButton), 0.5f);
-                }
-            }
+            if (!_isInteractable || _isActive) return;
+            
+            ActivateButton();
+            SequenceController.Instance.ClickSequencedObject(ObjectIndex);
+            Invoke(nameof(DeactivateButton), SequenceController.Instance.TimeBetweenEvents);
+            
+            AudioController.Instance.CreateSound()
+                .WithSoundData(_clickSound)
+                .WithRandomPitch(true)
+                .WithPosition(this.transform.position)
+                .Play();
         }
 
-        public void DeactivateButton()
-        {
-            SetMeshMaterial(_unActiveMaterial);
-            _light.enabled = false;
-            _isActive = false;
-        }
+        public void OnMouseEnter() { }
 
-        public void ActivateButton()
-        {
-            SetMeshMaterial(_activeMaterial);
-            _light.enabled = true;
-            _isActive = true;
-        }
+        public void OnMouseOver() { }
 
-        public void OnMouseEnter()
-        {
-            if (_isInteractable)
-            {
-            }
-        }
-
-        public void OnMouseOver()
-        {
-            if (_isInteractable)
-            {
-            }
-        }
-
-        public void OnMouseExit()
-        {
-            if (_isInteractable)
-            {
-            }
-        }
+        public void OnMouseExit() { }
         
         private void OnResetSequencedObjects(bool willActivate)
         {
@@ -122,13 +108,32 @@ namespace Gameplay.MiniGames.HiddenBalls
             }
         }
         
-        private void SetActiveColor(Color color)
+        private void SetActiveColor(Color targetColor, bool fadeIn)
+        {
+            _light.enabled = false;
+
+            StartCoroutine(fadeIn
+                ? LerpColor(targetColor, _unActiveMaterial.color, _unActiveMaterial)
+                : LerpColor(_unActiveMaterial.color, targetColor));
+        }
+        
+        private IEnumerator LerpColor(Color startColor, Color targetColor, Material endMaterial = null)
         {
             Material blackMat = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
-            blackMat.name = "Black";
-            blackMat.color = color;
-            SetMeshMaterial(blackMat);
-            _light.enabled = false;
+            
+            float duration = SequenceController.Instance.TimeBetweenEvents;
+            float elapsed = 0f;
+            
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                blackMat.color = Color.Lerp(startColor, targetColor, elapsed / duration);
+                SetMeshMaterial(blackMat);
+                yield return null;
+            }
+
+            if (endMaterial == null) endMaterial = blackMat;
+            SetMeshMaterial(endMaterial);
         }
         
         private void SetMeshMaterial(Material material)
@@ -152,16 +157,18 @@ namespace Gameplay.MiniGames.HiddenBalls
             return -1;
         }
 
-        private Material GetActiveColor(Material materialToCopy)
+        private static Material GetActiveColor(Material materialToCopy)
         {
-            Color unactiveColor = materialToCopy.color;
-            Color.RGBToHSV(unactiveColor, out float H, out float S, out float V);
+            Color unActiveColor = materialToCopy.color;
+            Color.RGBToHSV(unActiveColor, out float H, out float S, out float V);
             V = 1f;
             Color newColor = Color.HSVToRGB(H, S, V);
 
-            Material material = new Material(materialToCopy);
-            material.name = "ActiveColor";
-            material.color = newColor;
+            Material material = new Material(materialToCopy)
+            {
+                name = "ActiveColor",
+                color = newColor
+            };
             material.SetColor("_EmissionColor", newColor);
             material.EnableKeyword("_EMISSION");
             

@@ -98,6 +98,7 @@ public class CardPairsController : MonoBehaviour
         OnRandomizeCards?.Invoke();
     }
     
+    // ---- / Console Commands / ---- //
     private void OnConsoleCommand_turncards(NotificationCenter.Notification n)
     {
         _areAllCardsUp = !_areAllCardsUp;
@@ -113,7 +114,7 @@ public class CardPairsController : MonoBehaviour
     
     private void OnConsoleCommand_resetcards(NotificationCenter.Notification n)
     {
-        ResetAllCards();
+        StartCoroutine(ResetAllCards());
     }
 }
 

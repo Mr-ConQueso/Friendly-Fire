@@ -3,22 +3,22 @@ using System.Collections.Generic;
 
 public abstract class Pool<T> : IDisposable where T : Pool<T>, new()
 {
-    private static readonly Stack<Pool<T>> pool = new Stack<Pool<T>>();
+    private static readonly Stack<Pool<T>> poolStack = new Stack<Pool<T>>();
 
-    private bool disposed;
+    private bool _disposed;
 
     public static T Get()
     {
         T val = null;
-        if (pool.Count > 0)
+        if (poolStack.Count > 0)
         {
-            val = (T)pool.Pop();
+            val = (T)poolStack.Pop();
         }
         if (val == null)
         {
             val = new T();
         }
-        val.disposed = false;
+        val._disposed = false;
         return val;
     }
 
@@ -26,13 +26,13 @@ public abstract class Pool<T> : IDisposable where T : Pool<T>, new()
 
     private void Dispose(bool disposing)
     {
-        if (!disposed)
+        if (!_disposed)
         {
-            disposed = true;
+            _disposed = true;
             Deinitialize();
             if (disposing)
             {
-                pool.Push(this);
+                poolStack.Push(this);
             }
         }
     }

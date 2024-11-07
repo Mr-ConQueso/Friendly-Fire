@@ -14,7 +14,7 @@ public class DevConsole : MonoBehaviour
 	private static DevConsole _instance;
     
 	// ---- / Serialized Variables / ---- //
-	[SerializeField] private TMP_InputField inputField;
+	[SerializeField] private TMP_InputField _inputField;
 	
 	// ---- / Private Variables / ---- //
     private class CommandData
@@ -53,7 +53,7 @@ public class DevConsole : MonoBehaviour
 			return;
 		}
 		using ListPool<string> listPool = Pool<ListPool<string>>.Get();
-		List<string> list = listPool.list;
+		List<string> list = listPool.List;
 		foreach (KeyValuePair<string, CommandData> command in Commands)
 		{
 			string key = command.Key;
@@ -120,14 +120,14 @@ public class DevConsole : MonoBehaviour
 
 	private void ShowDevConsole()
 	{
-		inputField.gameObject.SetActive(true);
-		EventSystem.current.SetSelectedGameObject(inputField.gameObject);
+		_inputField.gameObject.SetActive(true);
+		EventSystem.current.SetSelectedGameObject(_inputField.gameObject);
 	}
 	
 	private void HideDevConsole()
 	{
-		inputField.text = null;
-		inputField.gameObject.SetActive(false);
+		_inputField.text = null;
+		_inputField.gameObject.SetActive(false);
 		EventSystem.current.SetSelectedGameObject(null);
 		_isConsoleShown = false;
 	}
@@ -137,12 +137,12 @@ public class DevConsole : MonoBehaviour
 		if (_historyIndex == 0)
 		{
 			Debug.Log("previous command: " + _history[_historyIndex]);
-			inputField.text = _history[_historyIndex];
+			_inputField.text = _history[_historyIndex];
 		}
 		if (_historyIndex > 0)
 		{
 			Debug.Log("previous command: " + _history[_historyIndex]);
-			inputField.text = _history[_historyIndex];
+			_inputField.text = _history[_historyIndex];
 			_historyIndex--;	
 		}
 	}
@@ -151,12 +151,12 @@ public class DevConsole : MonoBehaviour
 	{
 		if (_historyIndex == _history.Count)
 		{
-			inputField.text = _history[_historyIndex];
+			_inputField.text = _history[_historyIndex];
 		}
 		if (_historyIndex < _history.Count)
 		{
 			_historyIndex++;
-			inputField.text = _history[_historyIndex];
+			_inputField.text = _history[_historyIndex];
 		}
 	}
 
@@ -182,8 +182,8 @@ public class DevConsole : MonoBehaviour
 		else
 		{
 			Debug.LogWarning($"Command {value} not found!");
-			inputField.text = string.Empty;
-			EventSystem.current.SetSelectedGameObject(inputField.gameObject);
+			_inputField.text = string.Empty;
+			EventSystem.current.SetSelectedGameObject(_inputField.gameObject);
 		}
 	}
 	
@@ -256,7 +256,43 @@ public class DevConsole : MonoBehaviour
 			_historyIndex = _history.Count - 1;	
 		}
 	}
+	
+	private void SaveHistory()
+	{
+		if (_history == null)
+		{
+			return;
+		}
+		StringBuilder stringBuilder = new StringBuilder();
+		int i = Mathf.Max(0, _history.Count - 10);
+		for (int num = _history.Count - 1; i <= num; i++)
+		{
+			string value = _history[i];
+			if (i == num)
+			{
+				stringBuilder.Append(value);
+			}
+			else
+			{
+				stringBuilder.AppendLine(value);
+			}
+		}
+		string consoleHistory = stringBuilder.ToString();
+		MiscSettings.ConsoleHistory = consoleHistory;
+	}
 
+	private void LoadHistory()
+	{
+		_history.Clear();
+		string consoleHistory = MiscSettings.ConsoleHistory;
+		if (!string.IsNullOrEmpty(consoleHistory))
+		{
+			string[] collection = consoleHistory.Split(new string[2] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+			_history.AddRange(collection);
+		}
+	}
+
+	// ---- / Console Commands / ---- //
 	private void OnConsoleCommand_developermode()
 	{
 		/*
@@ -292,41 +328,6 @@ public class DevConsole : MonoBehaviour
 	{
 		_history.Clear();
 		//inputField.SetHistory(history);
-		MiscSettings.consoleHistory = string.Empty;
-	}
-	
-	private void SaveHistory()
-	{
-		if (_history == null)
-		{
-			return;
-		}
-		StringBuilder stringBuilder = new StringBuilder();
-		int i = Mathf.Max(0, _history.Count - 10);
-		for (int num = _history.Count - 1; i <= num; i++)
-		{
-			string value = _history[i];
-			if (i == num)
-			{
-				stringBuilder.Append(value);
-			}
-			else
-			{
-				stringBuilder.AppendLine(value);
-			}
-		}
-		string consoleHistory = stringBuilder.ToString();
-		MiscSettings.consoleHistory = consoleHistory;
-	}
-
-	private void LoadHistory()
-	{
-		_history.Clear();
-		string consoleHistory = MiscSettings.consoleHistory;
-		if (!string.IsNullOrEmpty(consoleHistory))
-		{
-			string[] collection = consoleHistory.Split(new string[2] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
-			_history.AddRange(collection);
-		}
+		MiscSettings.ConsoleHistory = string.Empty;
 	}
 }

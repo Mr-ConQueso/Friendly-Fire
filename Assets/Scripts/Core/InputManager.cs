@@ -7,7 +7,7 @@ public class InputManager : MonoBehaviour
     public static InputManager Instance;
     
     // ---- / Public Variables / ---- //
-    public Vector2 NavigationInput { get; set; }
+    public Vector2 navigationInput { get; private set; }
     
     public static bool WasToggleDevConsolePressed;
     
@@ -46,7 +46,7 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        NavigationInput = _navigationAction.ReadValue<Vector2>();
+        navigationInput = _navigationAction.ReadValue<Vector2>();
 
         WasToggleDevConsolePressed = _devConsoleAction.WasPerformedThisFrame();
 

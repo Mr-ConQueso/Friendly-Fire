@@ -5,9 +5,9 @@ using UnityEngine.Audio;
 [Serializable]
 public class SoundData
 {
-    public AudioClip clip;
-    public AudioMixerGroup mixerGroup;
-    public bool loop;
-    public bool playOnAwake;
-    public bool frequentSound;
+    public AudioClip Clip;
+    public AudioMixerGroup MixerGroup;
+    public bool Loop;
+    public bool PlayOnAwake;
+    public bool FrequentSound;
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class SoundEmitter : MonoBehaviour
 {
-    public SoundData Data { get; private set;  }
+    public SoundData data { get; private set;  }
     private AudioSource _audioSource;
     private Coroutine _playingCoroutine;
 
@@ -25,13 +25,13 @@ public class SoundEmitter : MonoBehaviour
         _playingCoroutine = StartCoroutine(WaitForSoundToEnd());
     }
 
-    public void Initialize(SoundData data)
+    public void Initialize(SoundData incomingData)
     {
-        Data = data;
-        _audioSource.clip = data.clip;
-        _audioSource.outputAudioMixerGroup = data.mixerGroup;
-        _audioSource.loop = data.loop;
-        _audioSource.playOnAwake = data.playOnAwake;
+        this.data = incomingData;
+        _audioSource.clip = incomingData.Clip;
+        _audioSource.outputAudioMixerGroup = incomingData.MixerGroup;
+        _audioSource.loop = incomingData.Loop;
+        _audioSource.playOnAwake = incomingData.PlayOnAwake;
     }
 
     public void Stop()
@@ -45,7 +45,7 @@ public class SoundEmitter : MonoBehaviour
         AudioController.Instance.ReturnToPool(this);
     }
 
-    IEnumerator WaitForSoundToEnd()
+    private IEnumerator WaitForSoundToEnd()
     {
         yield return new WaitWhile(() => _audioSource.isPlaying);
         AudioController.Instance.ReturnToPool(this);

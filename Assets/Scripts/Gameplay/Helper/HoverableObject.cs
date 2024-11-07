@@ -6,15 +6,17 @@ namespace Gameplay.Helper
     public class HoverableObject : MonoBehaviour, IHoverable
     {
         // ---- / Serialized Variables / ---- //
-        [SerializeField] protected float lerpDuration = 0.5f;
-        [SerializeField] protected Vector3 endPosition = Vector3.zero;
-        [SerializeField] protected float endScale = 1.0f;
+        [SerializeField] protected float LerpDuration = 0.5f;
+        [SerializeField] protected Vector3 EndPosition = Vector3.zero;
+        [SerializeField] protected float EndScale = 1.0f;
         
         // ---- / Protected Variables / ---- //
-        [HideInInspector] protected bool IsInteractable = true;
-        [HideInInspector] protected Vector3 StartPosition;
-        [HideInInspector] protected Vector3 StartScale;
-        [HideInInspector] protected Coroutine CurrentCoroutine;
+        protected bool isInteractable { get; private set; } = true;
+        protected Vector3 StartPosition;
+        protected Vector3 StartScale;
+        
+        // ---- / Private Variables / ---- //
+        private Coroutine _currentCoroutine;
         
         protected virtual void Start()
         {
@@ -24,26 +26,31 @@ namespace Gameplay.Helper
     
         public virtual void OnMouseEnter()
         {
-            if (!IsInteractable) return;
-            if (CurrentCoroutine != null) StopCoroutine(CurrentCoroutine);
+            if (!isInteractable) return;
+            if (_currentCoroutine != null) StopCoroutine(_currentCoroutine);
             
-            CurrentCoroutine = StartCoroutine(LerpTo(StartPosition + endPosition, StartScale * endScale));
+            _currentCoroutine = StartCoroutine(LerpTo(StartPosition + EndPosition, StartScale * EndScale));
         }
 
         public virtual void OnMouseOver() {}
 
         public virtual void OnMouseExit()
         {
-            if (!IsInteractable) return;
-            if (CurrentCoroutine != null) StopCoroutine(CurrentCoroutine);
+            if (!isInteractable) return;
+            if (_currentCoroutine != null) StopCoroutine(_currentCoroutine);
             
-            CurrentCoroutine = StartCoroutine(LerpTo(StartPosition, StartScale));
+            _currentCoroutine = StartCoroutine(LerpTo(StartPosition, StartScale));
         }
         
         protected void DisableInteractable()
         {
-            IsInteractable = false;
+            isInteractable = false;
             StartCoroutine(ReverseToStart());
+        }
+        
+        protected void EnableInteractable()
+        {
+            isInteractable = true;
         }
 
         protected IEnumerator LerpTo(Vector3 targetPosition, Vector3 targetScale)
@@ -52,10 +59,10 @@ namespace Gameplay.Helper
             Vector3 initialPosition = transform.position;
             Vector3 initialScale = transform.localScale;
 
-            while (elapsedTime < lerpDuration)
+            while (elapsedTime < LerpDuration)
             {
-                transform.position = Vector3.Lerp(initialPosition, targetPosition, elapsedTime / lerpDuration);
-                transform.localScale = Vector3.Lerp(initialScale, targetScale, elapsedTime / lerpDuration);
+                transform.position = Vector3.Lerp(initialPosition, targetPosition, elapsedTime / LerpDuration);
+                transform.localScale = Vector3.Lerp(initialScale, targetScale, elapsedTime / LerpDuration);
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }
@@ -66,13 +73,13 @@ namespace Gameplay.Helper
 
         private IEnumerator ReverseToStart()
         {
-            if (CurrentCoroutine != null)
+            if (_currentCoroutine != null)
             {
-                StopCoroutine(CurrentCoroutine);
+                StopCoroutine(_currentCoroutine);
             }
-            CurrentCoroutine = StartCoroutine(LerpTo(StartPosition, StartScale));
-            yield return CurrentCoroutine;
-            CurrentCoroutine = null;
+            _currentCoroutine = StartCoroutine(LerpTo(StartPosition, StartScale));
+            yield return _currentCoroutine;
+            _currentCoroutine = null;
         }
     }
 }

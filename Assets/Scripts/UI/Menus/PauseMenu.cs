@@ -5,7 +5,7 @@ using UnityEngine;
 public class PauseMenu : MonoBehaviour
 {
     // ---- / Serialized Variables / ---- //
-    [SerializeField] private float fadeDuration = 1f;
+    [SerializeField] private float _fadeDuration = 1f;
     
     // ---- / Private Variables / ---- //
     private CanvasGroup _canvasGroup;
@@ -60,10 +60,10 @@ public class PauseMenu : MonoBehaviour
     {
         float elapsedTime = 0f;
 
-        while (elapsedTime < fadeDuration)
+        while (elapsedTime < _fadeDuration)
         {
             elapsedTime += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / fadeDuration);
+            canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / _fadeDuration);
             yield return null;
         }
 

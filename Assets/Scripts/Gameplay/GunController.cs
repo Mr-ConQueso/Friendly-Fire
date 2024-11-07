@@ -20,11 +20,11 @@ namespace Gameplay
         {
             if (InputManager.WasShootPressed)
             {
-                if (_currentBulletType == BulletType.Bullet1 && GameController.Instance.CurrentTurn == PlayerType.Player2)
+                if (_currentBulletType == BulletType.Bullet1 && GameController.Instance.currentTurn == PlayerType.Player2)
                 {
                     _mainPlayerController.RemoveHealth(1);
                 }
-                else if (_currentBulletType == BulletType.Bullet2 && GameController.Instance.CurrentTurn == PlayerType.Player1)
+                else if (_currentBulletType == BulletType.Bullet2 && GameController.Instance.currentTurn == PlayerType.Player1)
                 {
                     _mainPlayerController.RemoveHealth(1);
                 }
@@ -41,6 +41,7 @@ namespace Gameplay
             GameController.Instance.ChangeTurn();
         }
         
+        // ---- / Console Commands / ---- //
         private void OnConsoleCommand_changebullet(NotificationCenter.Notification n)
         {
             string text = (string)n.Data[0];

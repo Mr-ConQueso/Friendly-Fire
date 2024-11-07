@@ -13,24 +13,24 @@ namespace Audio
 
         public SoundBuilder(AudioController audioController)
         {
-            this._audioController = audioController;
+            _audioController = audioController;
         }
 
         public SoundBuilder WithSoundData(SoundData soundData)
         {
-            this._soundData = soundData;
+            _soundData = soundData;
             return this;
         }
         
         public SoundBuilder WithRandomPitch(bool useRandomPitch = true)
         {
-            this._randomPitch = useRandomPitch;
+            _randomPitch = useRandomPitch;
             return this;
         }
         
         public SoundBuilder WithPosition(Vector3 position)
         {
-            this._position = position;
+            _position = position;
             return this;
         }
 
@@ -48,7 +48,7 @@ namespace Audio
                 soundEmitter.WithRandomPitch();
             }
 
-            if (_soundData.frequentSound)
+            if (_soundData.FrequentSound)
             {
                 _audioController.FrequentSoundEmitters.Enqueue(soundEmitter);
             }

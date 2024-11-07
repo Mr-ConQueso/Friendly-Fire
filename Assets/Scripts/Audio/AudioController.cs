@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Audio;
@@ -12,24 +11,24 @@ public class AudioController : MonoBehaviour
     public static AudioController Instance;
     
     // ---- / Public Variables / ---- //
-    public IObjectPool<SoundEmitter> SoundEmitterPool;
-    public readonly List<SoundEmitter> ActiveSoundEmitter = new();
+    private IObjectPool<SoundEmitter> _soundEmitterPool;
+    private readonly List<SoundEmitter> _activeSoundEmitter = new();
     public readonly Queue<SoundEmitter> FrequentSoundEmitters = new();
     
     // ---- / Serialized Variables / ---- //
-    [SerializeField] private SoundEmitter soundEmitterPrefab;
-    [SerializeField] private bool collectionCheck = true;
-    [SerializeField] private int defaultCapacity = 10;
-    [SerializeField] private int maxPoolSize = 100;
-    [SerializeField] private int maxSoundInstances = 30;
+    [SerializeField] private SoundEmitter _soundEmitterPrefab;
+    [SerializeField] private bool _collectionCheck = true;
+    [SerializeField] private int _defaultCapacity = 10;
+    [SerializeField] private int _maxPoolSize = 100;
+    [SerializeField] private int _maxSoundInstances = 30;
 
     public SoundBuilder CreateSound() => new SoundBuilder(this);
 
     public bool CanPlaySound(SoundData data)
     {
-        if (!data.frequentSound) return true;
+        if (!data.FrequentSound) return true;
 
-        if (FrequentSoundEmitters.Count >= maxSoundInstances && FrequentSoundEmitters.TryDequeue(out var soundEmitter))
+        if (FrequentSoundEmitters.Count >= _maxSoundInstances && FrequentSoundEmitters.TryDequeue(out var soundEmitter))
         {
             try
             {
@@ -49,12 +48,12 @@ public class AudioController : MonoBehaviour
 
     public SoundEmitter Get()
     {
-        return SoundEmitterPool.Get();
+        return _soundEmitterPool.Get();
     }
 
     public void ReturnToPool(SoundEmitter soundEmitter)
     {
-        SoundEmitterPool.Release(soundEmitter);
+        _soundEmitterPool.Release(soundEmitter);
     }
     
     private void Awake()
@@ -82,17 +81,15 @@ public class AudioController : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
-        for (int i = 0; i < ActiveSoundEmitter.Count; i++)
+        foreach (SoundEmitter emitter in _activeSoundEmitter.Where(emitter => emitter.gameObject != null))
         {
-            if (ActiveSoundEmitter[i].gameObject != null)
-            {
-                Destroy(ActiveSoundEmitter[i].gameObject);
-            }
+            Destroy(emitter.gameObject);
         }
-        ActiveSoundEmitter.Clear();
+
+        _activeSoundEmitter.Clear();
     }
 
-    private void OnDestroyPoolObject(SoundEmitter soundEmitter)
+    private static void OnDestroyPoolObject(SoundEmitter soundEmitter)
     {
         Destroy(soundEmitter);
     }
@@ -100,31 +97,31 @@ public class AudioController : MonoBehaviour
     private void OnReturnedToPool(SoundEmitter soundEmitter)
     {
         soundEmitter.gameObject.SetActive(false);
-        ActiveSoundEmitter.Remove(soundEmitter);
+        _activeSoundEmitter.Remove(soundEmitter);
     }
 
     private void OnTakeFromPool(SoundEmitter soundEmitter)
     {
         soundEmitter.gameObject.SetActive(true);
-        ActiveSoundEmitter.Add(soundEmitter);
+        _activeSoundEmitter.Add(soundEmitter);
     }
 
     private SoundEmitter CreateSoundEmitter()
     {
-        var soundEmitter = Instantiate(soundEmitterPrefab);
-        soundEmitterPrefab.gameObject.SetActive(false);
+        SoundEmitter soundEmitter = Instantiate(_soundEmitterPrefab);
+        _soundEmitterPrefab.gameObject.SetActive(false);
         return soundEmitter;
     }
 
     private void InitializePool()
     {
-        SoundEmitterPool = new ObjectPool<SoundEmitter>(
+        _soundEmitterPool = new ObjectPool<SoundEmitter>(
             CreateSoundEmitter,
             OnTakeFromPool,
             OnReturnedToPool,
             OnDestroyPoolObject,
-            collectionCheck,
-            defaultCapacity,
-            maxPoolSize);
+            _collectionCheck,
+            _defaultCapacity,
+            _maxPoolSize);
     }
 }

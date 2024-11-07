@@ -1,17 +1,18 @@
+using System;
 using UnityEngine;
 
 public class MainPlayerController : MonoBehaviour
 {
     // ---- / Serialized Variables / ---- //
-    [SerializeField] private int maxPlayerHealth = 3;
-    [SerializeField] private PlayerGUIController playerGUIController;
+    [SerializeField] private int _maxPlayerHealth = 3;
+    [SerializeField] private PlayerGUIController _playerGUIController;
     
     // ---- / Private Variables / ---- //
     private int _currentPlayer1Health, _currentPlayer2Health;
-    
-    public void AddHealth(int amount)
+
+    private void AddHealth(int amount)
     {
-        switch (GameController.Instance.CurrentTurn)
+        switch (GameController.Instance.currentTurn)
         {
             case PlayerType.Player1:
             {
@@ -23,12 +24,14 @@ public class MainPlayerController : MonoBehaviour
                 TryAddHealth(_currentPlayer2Health, amount);
                 break;
             }
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
     
     public void RemoveHealth(int amount)
     {
-        switch (GameController.Instance.CurrentTurn)
+        switch (GameController.Instance.currentTurn)
         {
             case PlayerType.Player1:
             {
@@ -40,6 +43,8 @@ public class MainPlayerController : MonoBehaviour
                 TryRemoveHealth(_currentPlayer2Health, amount);
                 break;
             }
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
     
@@ -57,8 +62,8 @@ public class MainPlayerController : MonoBehaviour
 
     private void Start()
     {
-        _currentPlayer1Health = maxPlayerHealth;
-        _currentPlayer2Health = maxPlayerHealth;
+        _currentPlayer1Health = _maxPlayerHealth;
+        _currentPlayer2Health = _maxPlayerHealth;
         
         DevConsole.RegisterConsoleCommand(this, "addhealth");
         DevConsole.RegisterConsoleCommand(this, "removehealth");
@@ -73,27 +78,27 @@ public class MainPlayerController : MonoBehaviour
 
     private void RefreshHealthBar()
     {
-        switch (GameController.Instance.CurrentTurn)
+        switch (GameController.Instance.currentTurn)
         {
             case PlayerType.Player1:
-                playerGUIController.UpdateHealthBar(_currentPlayer1Health, maxPlayerHealth);
+                _playerGUIController.UpdateHealthBar(_currentPlayer1Health, _maxPlayerHealth);
                 break;
             case PlayerType.Player2:
-                playerGUIController.UpdateHealthBar(_currentPlayer2Health, maxPlayerHealth);
+                _playerGUIController.UpdateHealthBar(_currentPlayer2Health, _maxPlayerHealth);
                 break;
         }
     }
 
     private void TryAddHealth(int currentHealth, int amount)
     {
-        if (currentHealth + amount > maxPlayerHealth)
+        if (currentHealth + amount > _maxPlayerHealth)
         {
             Debug.LogWarning("Trying to add more health to max player health");
             return;
         }
         
         currentHealth += amount;
-        switch (GameController.Instance.CurrentTurn)
+        switch (GameController.Instance.currentTurn)
         {
             case PlayerType.Player1:
                 _currentPlayer1Health += amount;
@@ -102,7 +107,7 @@ public class MainPlayerController : MonoBehaviour
                 _currentPlayer2Health += amount;
                 break;
         }
-        playerGUIController.UpdateHealthBar(currentHealth, maxPlayerHealth);
+        _playerGUIController.UpdateHealthBar(currentHealth, _maxPlayerHealth);
     }
 
     private void TryRemoveHealth(int currentHealth, int amount)
@@ -114,7 +119,7 @@ public class MainPlayerController : MonoBehaviour
         }
         
         currentHealth -= amount;
-        switch (GameController.Instance.CurrentTurn)
+        switch (GameController.Instance.currentTurn)
         {
             case PlayerType.Player1:
                 _currentPlayer1Health -= amount;
@@ -122,27 +127,28 @@ public class MainPlayerController : MonoBehaviour
             case PlayerType.Player2:
                 _currentPlayer2Health -= amount;
                 break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
-        playerGUIController.UpdateHealthBar(currentHealth, maxPlayerHealth);
+        _playerGUIController.UpdateHealthBar(currentHealth, _maxPlayerHealth);
     }
 
+    // ---- / Console Commands / ---- //
     private void OnConsoleCommand_addhealth(NotificationCenter.Notification n)
     {
         string text = (string)n.Data[0];
-        if (!string.IsNullOrEmpty(text) && int.TryParse(text, out var result))
-        {
-            Debug.Log($"{result} health added to current player");
-            AddHealth(result);
-        }
+        if (string.IsNullOrEmpty(text) || !int.TryParse(text, out var result)) return;
+        
+        Debug.Log($"{result} health added to current player");
+        AddHealth(result);
     }
     
     private void OnConsoleCommand_removehealth(NotificationCenter.Notification n)
     {
         string text = (string)n.Data[0];
-        if (!string.IsNullOrEmpty(text) && int.TryParse(text, out var result))
-        {
-            Debug.Log($"{result} health removed from current player");
-            RemoveHealth(result);
-        }
+        if (string.IsNullOrEmpty(text) || !int.TryParse(text, out var result)) return;
+        
+        Debug.Log($"{result} health removed from current player");
+        RemoveHealth(result);
     }
 }

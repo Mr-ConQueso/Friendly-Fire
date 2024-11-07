@@ -7,14 +7,14 @@ using UnityEngine.Rendering.Universal;
 public class BlurSettings : VolumeComponent, IPostProcessComponent
 {
     [Tooltip("Standard deviation (spread) of the blur. Grid size is approx. 3x larger.")]
-    public ClampedFloatParameter strength = new ClampedFloatParameter(0.0f, 0.0f, 15.0f);
+    public ClampedFloatParameter Strength = new ClampedFloatParameter(0.0f, 0.0f, 15.0f);
     
     [Tooltip("Select a blurring algorithm to use for the blurring process.")]
-    public BlurModeParameter blurMode = new BlurModeParameter(BlurMode.GaussianBlur);
+    public BlurModeParameter BlurMode = new BlurModeParameter(global::BlurMode.GaussianBlur);
 
     public bool IsActive()
     {
-        return (strength.value > 0.0f) && active;
+        return (Strength.value > 0.0f) && active;
     }
 
     public bool IsTileCompatible()

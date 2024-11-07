@@ -37,15 +37,12 @@ public class GameController : MonoBehaviour
     
     #endregion
     
-    // ---- / Public Variables / ---- //
-    public bool DEBUG_MODE = true;
-    
     // ---- / Hidden Public Variables / ---- //
     [HideInInspector] public bool CanPauseGame = false;
-    [HideInInspector] public bool IsPlayerFrozen { get; private set; } = true;
-    [HideInInspector] public bool IsGamePaused { get; private set; }
-    [HideInInspector] public PlayerType CurrentTurn { get; private set; } = PlayerType.Player1;
-    [HideInInspector] public int CurrentRound { get; private set; }
+    public bool isPlayerFrozen { get; private set; } = true;
+    public bool isGamePaused { get; private set; }
+    public PlayerType currentTurn { get; private set; } = PlayerType.Player1;
+    public int currentRound { get; private set; }
     
     // ---- / Serialized Variables / ---- //
     [SerializeField] private int _maxRounds = 5;
@@ -57,8 +54,8 @@ public class GameController : MonoBehaviour
 
     public void InvokeOnGameResumed()
     {
-        IsPlayerFrozen = false;
-        IsGamePaused = false;
+        isPlayerFrozen = false;
+        isGamePaused = false;
         OnGameResumed?.Invoke();
     }
 
@@ -74,12 +71,12 @@ public class GameController : MonoBehaviour
 
     public void ChangeTurn()
     {
-        if (CurrentRound + 1 > _maxRounds)
+        if (currentRound + 1 > _maxRounds)
         {
            EndGame();
            return;
         }
-
+        
         if (_currentShotsInRound < _shotsPerMiniGame)
         {
             _currentShotsInRound++;
@@ -87,20 +84,21 @@ public class GameController : MonoBehaviour
         else
         {
             OnStartMiniGame?.Invoke();
+            _currentShotsInRound = 0;
         }
 
-        CurrentRound++;
-        switch (CurrentTurn)
+        currentRound++;
+        switch (currentTurn)
         {
             case PlayerType.Player1:
             {
-                CurrentTurn = PlayerType.Player2;
+                currentTurn = PlayerType.Player2;
                 OnChangeTurn?.Invoke();
                 break;
             }
             case PlayerType.Player2:
             {
-                CurrentTurn = PlayerType.Player1;
+                currentTurn = PlayerType.Player1;
                 OnChangeTurn?.Invoke();
                 break;
             }
@@ -130,8 +128,8 @@ public class GameController : MonoBehaviour
     {
         if (InputManager.WasEscapePressed && CanPauseGame)
         {
-            IsGamePaused = !IsGamePaused;
-            if (IsGamePaused)
+            isGamePaused = !isGamePaused;
+            if (isGamePaused)
             {
                 PauseGame();
             }
@@ -144,8 +142,8 @@ public class GameController : MonoBehaviour
 
     private void StartGame()
     {
-        IsPlayerFrozen = false;
-        IsGamePaused = false;
+        isPlayerFrozen = false;
+        isGamePaused = false;
         CanPauseGame = true;
         OnGameStart?.Invoke();
         OnStartTurn1?.Invoke();
@@ -153,13 +151,13 @@ public class GameController : MonoBehaviour
 
     private void PauseGame()
     {
-        IsPlayerFrozen = true;
+        isPlayerFrozen = true;
         OnGamePaused?.Invoke();
     }
     
     private void ResumeGame()
     {
-        IsPlayerFrozen = false;
+        isPlayerFrozen = false;
         OnGameResumed?.Invoke();
     }
 
@@ -167,14 +165,15 @@ public class GameController : MonoBehaviour
     {
         if (!_isGameEnded)
         {
-            IsPlayerFrozen = true;
+            isPlayerFrozen = true;
             OnGameEnd?.Invoke();
             SceneSwapManager.SwapScene("EndMenu");
             
             _isGameEnded = true;
         }
     }
-
+    
+    // ---- / Console Commands / ---- //
     private void OnConsoleCommand_round(NotificationCenter.Notification n)
     {
         string text = (string)n.Data[0];
@@ -182,7 +181,7 @@ public class GameController : MonoBehaviour
         {
             Debug.Log("Current round set to: " + result);
             OnChangeTurn?.Invoke();
-            CurrentRound = result;
+            currentRound = result;
         }
     }
 }

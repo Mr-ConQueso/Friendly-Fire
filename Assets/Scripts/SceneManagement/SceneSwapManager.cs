@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,13 +7,13 @@ namespace BaseGame
     public class SceneSwapManager : MonoBehaviour
     {
         // ---- / Singleton / ---- //
-        public static SceneSwapManager Instance;
+        private static SceneSwapManager _instance;
         
         private void Awake()
         {
-            if (Instance == null)
+            if (_instance == null)
             {
-                Instance = this;
+                _instance = this;
             }
         }
 
@@ -29,9 +28,9 @@ namespace BaseGame
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
-        public static void SwapScene(String scene)
+        public static void SwapScene(string scene)
         {
-            Instance.StartCoroutine(Instance.TransitionTheSwapScene(scene));
+            _instance.StartCoroutine(TransitionTheSwapScene(scene));
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
@@ -39,11 +38,11 @@ namespace BaseGame
             StopAllCoroutines();
         }
 
-        private IEnumerator TransitionTheSwapScene(String scene)
+        private static IEnumerator TransitionTheSwapScene(string scene)
         {
             SceneTransitionManager.Instance.StartAnimation();
 
-            while (SceneTransitionManager.Instance.IsFadingIn)
+            while (SceneTransitionManager.Instance.isFadingIn)
             {
                 yield return null;
             }
