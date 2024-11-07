@@ -6,10 +6,11 @@ using UnityEngine.Rendering.Universal;
 
 public class PosterizationBehaviours : VolumeComponent, IPostProcessComponent
 {
-    public IntParameter Intensity = new IntParameter(0);
+    public ColorParameter color = new ColorParameter(Color.black);
+    public FloatParameter saturation = new FloatParameter(0);
+    public IntParameter Value = new IntParameter(0);
 
-
-    public bool IsActive() => Intensity.value > 0.1f;
+    public bool IsActive() => Value.value > 0.1f;
 
     public bool IsTileCompatible() => true;
 }

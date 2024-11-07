@@ -5,21 +5,24 @@ using UnityEngine.Rendering.Universal;
 
 public class DitheringPass : ScriptableRenderPass
 {
-    public Material posterMaterial;
+    public Material ditherMaterial;
     private DitheringBehaviours settings1;
+    private PixelatedBehaviour pixelPass;
     private RenderTargetIdentifier source;
 
     private readonly int temporaryRTIdA = Shader.PropertyToID("_TempRT");
 
-    public DitheringPass(Material posMaterial)
+    public DitheringPass(Material ditMaterial)
     {
-        posterMaterial = posMaterial;
+        ditherMaterial = ditMaterial;
         renderPassEvent = RenderPassEvent.AfterRenderingPostProcessing;
     }
 
     public bool Setup(DitheringBehaviours settings)
     {
         settings1 = VolumeManager.instance.stack.GetComponent<DitheringBehaviours>();
+        
+        pixelPass = VolumeManager.instance.stack.GetComponent<PixelatedBehaviour>();
         if (settings1 != null && settings1.IsActive())
         {
             return true;
@@ -29,22 +32,30 @@ public class DitheringPass : ScriptableRenderPass
 
     public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
     {
-        if (posterMaterial == null || settings1 == null || !settings1.IsActive())
+        if (ditherMaterial == null || settings1 == null || !settings1.IsActive())
         {
             Debug.Log(settings1);
             return;
         }
 
-        CommandBuffer cmd = CommandBufferPool.Get("PosterizationPass");
+        CommandBuffer cmd = CommandBufferPool.Get("DitheringPass");
         
         // Utiliza renderingData para obtener el color target
+        if(pixelPass == null|| pixelPass.IsActive())
+        {
+            
+        }
+        else
+        {
+            ditherMaterial.SetInt("_ScreenHeight", renderingData.cameraData.camera.scaledPixelHeight);
+            ditherMaterial.SetInt("_ScreenWidth", renderingData.cameraData.camera.scaledPixelWidth);
+        }
         source = renderingData.cameraData.renderer.cameraColorTargetHandle;           
-        posterMaterial.SetFloat("_Levels", settings1.Intensity.value);
 
         RenderTextureDescriptor opaqueDesc = renderingData.cameraData.cameraTargetDescriptor;
         cmd.GetTemporaryRT(temporaryRTIdA, opaqueDesc);
 
-        cmd.Blit( source, temporaryRTIdA, posterMaterial);
+        cmd.Blit( source, temporaryRTIdA, ditherMaterial);
         cmd.Blit(temporaryRTIdA, source);
 
         context.ExecuteCommandBuffer(cmd);

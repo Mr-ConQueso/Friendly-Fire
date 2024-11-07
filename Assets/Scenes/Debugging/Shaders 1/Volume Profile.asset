@@ -15,7 +15,7 @@ MonoBehaviour:
   active: 1
   PixelResolution:
     m_OverrideState: 0
-    m_Value: 601
+    m_Value: 188
 --- !u!114 &-6032048302135641483
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -61,9 +61,9 @@ MonoBehaviour:
   m_Name: DitheringBehaviours
   m_EditorClassIdentifier: 
   active: 1
-  Intensity:
+  Value:
     m_OverrideState: 1
-    m_Value: 7
+    m_Value: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,6 +94,12 @@ MonoBehaviour:
   m_Name: PosterizationBehaviours
   m_EditorClassIdentifier: 
   active: 1
-  Intensity:
+  color:
     m_OverrideState: 1
-    m_Value: 7
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
+  saturation:
+    m_OverrideState: 1
+    m_Value: -0.48
+  Value:
+    m_OverrideState: 1
+    m_Value: 9

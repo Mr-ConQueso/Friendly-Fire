@@ -39,7 +39,7 @@ public class PosterizationPass : ScriptableRenderPass
         
         // Utiliza renderingData para obtener el color target
         source = renderingData.cameraData.renderer.cameraColorTargetHandle;           
-        posterMaterial.SetFloat("_Levels", settings1.Intensity.value);
+        posterMaterial.SetFloat("_Levels", settings1.Value.value);
 
         RenderTextureDescriptor opaqueDesc = renderingData.cameraData.cameraTargetDescriptor;
         cmd.GetTemporaryRT(temporaryRTIdA, opaqueDesc);

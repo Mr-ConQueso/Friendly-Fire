@@ -17,7 +17,7 @@ public class PosterizationFeatures : ScriptableRendererFeature
     {
         var posterizationSettings = VolumeManager.instance.stack.GetComponent<PosterizationBehaviours>();
 
-        if (posterizationSettings.Intensity != null && postPass.Setup(posterizationSettings))
+        if (posterizationSettings.Value != null && postPass.Setup(posterizationSettings))
         {
             renderer.EnqueuePass(postPass);
         }

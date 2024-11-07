@@ -31,7 +31,7 @@ Material:
     m_Floats:
     - _Blue: 8
     - _Green: 110.7
-    - _Levels: 7
+    - _Levels: 9
     - _Red: 5.48
     m_Colors: []
   m_BuildTextureStacks: []

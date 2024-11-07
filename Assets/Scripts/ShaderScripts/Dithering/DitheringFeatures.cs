@@ -17,7 +17,7 @@ public class DitheringFeatures : ScriptableRendererFeature
     {
         var ditheringSettings = VolumeManager.instance.stack.GetComponent<DitheringBehaviours>();
 
-        if (ditheringSettings.Intensity != null && DitPass.Setup(ditheringSettings))
+        if (ditheringSettings.Value != null && DitPass.Setup(ditheringSettings))
         {
             renderer.EnqueuePass(DitPass);
         }
